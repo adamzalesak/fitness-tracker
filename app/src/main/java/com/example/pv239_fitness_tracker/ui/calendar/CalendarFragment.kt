@@ -14,23 +14,36 @@ class CalendarFragment : Fragment() {
 
     private lateinit var binding: FragmentCalendarBinding
     private var selectedDate = LocalDate.now()
-    private var formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCalendarBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
+    private fun updateCurrentDate() {
+        binding.currentDate.text = selectedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.currentDate.text = selectedDate.format(formatter)
+        updateCurrentDate()
+
+        binding.prevDay.setOnClickListener {
+            selectedDate = selectedDate.minusDays(1)
+            updateCurrentDate()
+        }
+
+        binding.nextDay.setOnClickListener {
+            selectedDate = selectedDate.plusDays(1)
+            updateCurrentDate()
+        }
 
         binding.currentDate.setOnClickListener {
             val datePickerDialog = DatePickerDialog(requireContext(),
                 {view, year, month, dayOfMonth ->
                     selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-                    binding.currentDate.text = selectedDate.format(formatter)
+                    updateCurrentDate()
                 },
                 selectedDate.year,
                 selectedDate.monthValue - 1,
