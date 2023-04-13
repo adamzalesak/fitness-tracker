@@ -4,11 +4,13 @@
     <!-- Strings used for fragments for navigation -->
     <string name="calendar_fragment_label">Calendar Fragment</string>
 
+    <string name="add_set">Add set</string>
+    <string name="add_activity">Add activity</string>
+
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
     <string name="bottom_navigation_calendar">Calendar</string>
-    <string name="bottom_navigation_excercises">Excercises</string>
+    <string name="bottom_navigation_exercises">Exercises</string>
 
-    <string name="add_activity">Add activity</string>
 </resources>
