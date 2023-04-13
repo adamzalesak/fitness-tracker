@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:id="@+id/calendar_options_layout"
@@ -29,7 +29,7 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             tools:text="13.04.2023"/>
@@ -67,7 +67,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/add_activity"
+        android:textColor="@color/white"
         app:icon="@drawable/baseline_add_24"
+        app:iconTint="@color/white"
+        android:backgroundTint="@color/purple_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
