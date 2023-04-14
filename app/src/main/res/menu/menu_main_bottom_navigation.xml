@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/consumptionFragment"
+        android:icon="@drawable/baseline_calendar_month_24"
+        android:title="@string/bottom_navigation_calendar" />
+
+    <item
+        android:id="@+id/trendsFragment"
+        android:icon="@drawable/baseline_directions_run_24"
+        android:title="@string/bottom_navigation_exercises" />
+</menu>
