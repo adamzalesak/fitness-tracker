@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/consumptionFragment"
+        android:id="@+id/calendar_fragment"
         android:icon="@drawable/baseline_calendar_month_24"
         android:title="@string/bottom_navigation_calendar" />
 
     <item
-        android:id="@+id/trendsFragment"
+        android:id="@+id/exercises_fragment"
         android:icon="@drawable/baseline_directions_run_24"
         android:title="@string/bottom_navigation_exercises" />
 </menu>
