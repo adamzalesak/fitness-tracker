@@ -61,10 +61,10 @@
         android:layout_marginTop="70dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/shadow"
-        tools:listitem="@layout/item_workout_exercise" />
+        tools:listitem="@layout/item_workout_activity" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/add_consumption_button"
+        android:id="@+id/add_activity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
