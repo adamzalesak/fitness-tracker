@@ -13,5 +13,8 @@
     <string name="bottom_navigation_calendar">Calendar</string>
     <string name="bottom_navigation_exercises">Exercises</string>
 
+    <string name="set_weight_unit">kg</string>
+    <string name="set_reps_unit">reps</string>
+
     <string name="graph_statistics_maximums">Maximums</string>
 </resources>

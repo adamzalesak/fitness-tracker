@@ -25,15 +25,6 @@ class CalendarFragment : Fragment() {
         return binding.root
     }
 
-    private val adapter: ActivityAdapter by lazy {
-        ActivityAdapter(
-            onItemClick = { activity ->
-                //TODO real onclick event
-                print(activity.id)
-            }
-        )
-    }
-
     private fun updateCurrentDate() {
         binding.currentDate.text = selectedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
     }
@@ -67,9 +58,6 @@ class CalendarFragment : Fragment() {
             datePickerDialog.show()
         }
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.recyclerView.adapter = adapter
-
         val exercise1 = Exercise(1, "Bench")
         val exercise2 = Exercise(2, "Squat")
         val exercise3 = Exercise(3, "Deadlift")
@@ -83,10 +71,11 @@ class CalendarFragment : Fragment() {
 
         val activityList = listOf(
             Activity(1, exercise1, Date(), sets),
-            Activity(2, exercise2, Date(), emptyList<Set>()),
-            Activity(3, exercise3, Date(), emptyList<Set>()),
+            Activity(2, exercise2, Date(), sets.reversed()),
+            Activity(3, exercise3, Date(), sets.shuffled()),
         )
 
-        adapter.submitList(activityList)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = ActivityAdapter(activityList)
     }
 }

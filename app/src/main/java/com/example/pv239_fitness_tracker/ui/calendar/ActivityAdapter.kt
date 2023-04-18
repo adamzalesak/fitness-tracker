@@ -3,14 +3,14 @@ package com.example.pv239_fitness_tracker.ui.calendar
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pv239_fitness_tracker.data.Activity
+import com.example.pv239_fitness_tracker.data.Set
 import com.example.pv239_fitness_tracker.databinding.ItemWorkoutActivityBinding
 
-class ActivityAdapter(
-    private val onItemClick: (Activity) -> Unit,
-) : ListAdapter<Activity, ActivityViewHolder>(ActivityDiffUtil()) {
+class ActivityAdapter(private val activities: List<Activity>) : RecyclerView.Adapter<ActivityViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder =
         ActivityViewHolder(
@@ -19,30 +19,21 @@ class ActivityAdapter(
         )
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        val item = getItem(position)
-        holder.bind(item, onItemClick)
+        holder.bind(activities[position])
     }
 
+    override fun getItemCount() = activities.size
 }
 
 class ActivityViewHolder(
     private val binding: ItemWorkoutActivityBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: Activity, onItemClick: (Activity) -> Unit) {
+    fun bind(item: Activity) {
         binding.exerciseNameTextView.text = item.exercise.name
 
-        binding.root.setOnClickListener {
-            onItemClick(item)
-        }
+        val setAdapter = SetAdapter(item.sets)
+        binding.setRecycler.layoutManager = LinearLayoutManager(itemView.context)
+        binding.setRecycler.adapter = setAdapter
     }
-}
-
-class ActivityDiffUtil : DiffUtil.ItemCallback<Activity>() {
-    override fun areItemsTheSame(oldItem: Activity, newItem: Activity): Boolean =
-        oldItem.id == newItem.id
-
-    override fun areContentsTheSame(oldItem: Activity, newItem: Activity): Boolean =
-        oldItem == newItem
-
 }
