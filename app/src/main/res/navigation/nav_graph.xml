@@ -3,13 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/CalendarFragment">
+    app:startDestination="@id/calendar_fragment">
 
     <fragment
-        android:id="@+id/CalendarFragment"
+        android:id="@+id/calendar_fragment"
         android:name="com.example.pv239_fitness_tracker.ui.calendar.CalendarFragment"
         android:label="@string/calendar_fragment_label"
         tools:layout="@layout/fragment_calendar">
-
     </fragment>
+    <fragment
+        android:id="@+id/exercises_fragment"
+        android:name="com.example.pv239_fitness_tracker.ui.exercises.ExercisesFragment"
+        android:label="ExercisesFragment"
+        tools:layout="@layout/fragment_exercises" />
 </navigation>
