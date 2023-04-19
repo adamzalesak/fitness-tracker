@@ -2,7 +2,6 @@
     <string name="app_name">pv239-fitness-tracker</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="calendar_fragment_label">Calendar Fragment</string>
 
     <string name="add_set">Add set</string>
     <string name="add_activity">Add activity</string>
@@ -13,6 +12,9 @@
     <string name="bottom_navigation_calendar">Calendar</string>
     <string name="bottom_navigation_exercises">Exercises</string>
 
+
+    <string name="set_weight">Weight</string>
+    <string name="set_reps">Reps</string>
     <string name="set_weight_unit">kg</string>
     <string name="set_reps_unit">reps</string>
 

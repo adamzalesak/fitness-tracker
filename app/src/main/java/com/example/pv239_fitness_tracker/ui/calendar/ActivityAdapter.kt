@@ -2,6 +2,7 @@ package com.example.pv239_fitness_tracker.ui.calendar
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -10,7 +11,9 @@ import com.example.pv239_fitness_tracker.data.Activity
 import com.example.pv239_fitness_tracker.data.Set
 import com.example.pv239_fitness_tracker.databinding.ItemWorkoutActivityBinding
 
-class ActivityAdapter() : ListAdapter<Activity, ActivityViewHolder>(ActivityDiffUtil()) {
+class ActivityAdapter(
+    private val onSetAdd: () -> Unit,
+) : ListAdapter<Activity, ActivityViewHolder>(ActivityDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder =
         ActivityViewHolder(
@@ -19,21 +22,25 @@ class ActivityAdapter() : ListAdapter<Activity, ActivityViewHolder>(ActivityDiff
         )
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onSetAdd)
     }
 }
 
 class ActivityViewHolder(
-    private val binding: ItemWorkoutActivityBinding
+    private val binding: ItemWorkoutActivityBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     var setAdapter = SetAdapter()
 
-    fun bind(item: Activity) {
+    fun bind(item: Activity, onSetAdd: () -> Unit) {
         binding.exerciseNameTextView.text = item.exercise.name
 
         binding.setRecycler.layoutManager = LinearLayoutManager(itemView.context)
         binding.setRecycler.adapter = setAdapter
+
+        binding.addSetButton.setOnClickListener {
+            onSetAdd()
+        }
 
         setAdapter.submitList(item.sets)
     }

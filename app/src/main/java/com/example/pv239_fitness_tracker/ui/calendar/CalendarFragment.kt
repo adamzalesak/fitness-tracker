@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pv239_fitness_tracker.data.Activity
 import com.example.pv239_fitness_tracker.data.Exercise
@@ -29,7 +30,14 @@ class CalendarFragment : Fragment() {
         binding.currentDate.text = selectedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
     }
 
-    var adapter = ActivityAdapter()
+    private var adapter = ActivityAdapter(
+        onSetAdd = {
+            findNavController()
+                .navigate(
+                    CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment()
+                )
+        }
+    )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,7 +79,7 @@ class CalendarFragment : Fragment() {
             Set(4, 70.0, 8),
         )
 
-        var activities = listOf(
+        val activities = listOf(
             Activity(1, exercise1, Date(), sets),
             Activity(2, exercise2, Date(), sets.reversed()),
             Activity(3, exercise3, Date(), sets.shuffled()),
@@ -80,5 +88,12 @@ class CalendarFragment : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
         binding.recyclerView.adapter = adapter
         adapter.submitList(activities)
+
+        binding.addActivityButton.setOnClickListener {
+            findNavController()
+                .navigate(
+                    CalendarFragmentDirections.actionActivityFragmentToActivityAddFragment()
+                )
+        }
     }
 }
