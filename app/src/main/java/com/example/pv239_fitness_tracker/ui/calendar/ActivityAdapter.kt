@@ -10,7 +10,7 @@ import com.example.pv239_fitness_tracker.data.Activity
 import com.example.pv239_fitness_tracker.data.Set
 import com.example.pv239_fitness_tracker.databinding.ItemWorkoutActivityBinding
 
-class ActivityAdapter(private val activities: List<Activity>) : RecyclerView.Adapter<ActivityViewHolder>() {
+class ActivityAdapter() : ListAdapter<Activity, ActivityViewHolder>(ActivityDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder =
         ActivityViewHolder(
@@ -19,21 +19,30 @@ class ActivityAdapter(private val activities: List<Activity>) : RecyclerView.Ada
         )
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        holder.bind(activities[position])
+        holder.bind(getItem(position))
     }
-
-    override fun getItemCount() = activities.size
 }
 
 class ActivityViewHolder(
     private val binding: ItemWorkoutActivityBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    var setAdapter = SetAdapter()
+
     fun bind(item: Activity) {
         binding.exerciseNameTextView.text = item.exercise.name
 
-        val setAdapter = SetAdapter(item.sets)
         binding.setRecycler.layoutManager = LinearLayoutManager(itemView.context)
         binding.setRecycler.adapter = setAdapter
+
+        setAdapter.submitList(item.sets)
     }
+}
+
+class ActivityDiffUtil : DiffUtil.ItemCallback<Activity>() {
+    override fun areItemsTheSame(oldItem: Activity, newItem: Activity): Boolean =
+        oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: Activity, newItem: Activity): Boolean =
+        oldItem == newItem
 }

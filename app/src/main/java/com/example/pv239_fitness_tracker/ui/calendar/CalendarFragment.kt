@@ -29,6 +29,8 @@ class CalendarFragment : Fragment() {
         binding.currentDate.text = selectedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
     }
 
+    var adapter = ActivityAdapter()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -69,13 +71,14 @@ class CalendarFragment : Fragment() {
             Set(4, 70.0, 8),
         )
 
-        val activityList = listOf(
+        var activities = listOf(
             Activity(1, exercise1, Date(), sets),
             Activity(2, exercise2, Date(), sets.reversed()),
             Activity(3, exercise3, Date(), sets.shuffled()),
         )
 
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
-        binding.recyclerView.adapter = ActivityAdapter(activityList)
+        binding.recyclerView.adapter = adapter
+        adapter.submitList(activities)
     }
 }
