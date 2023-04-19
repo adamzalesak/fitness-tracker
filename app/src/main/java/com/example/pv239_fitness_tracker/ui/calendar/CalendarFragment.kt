@@ -30,14 +30,21 @@ class CalendarFragment : Fragment() {
         binding.currentDate.text = selectedDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
     }
 
-    private var adapter = ActivityAdapter(
-        onSetAdd = {
-            findNavController()
-                .navigate(
-                    CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment()
-                )
-        }
-    )
+    private val adapter: ActivityAdapter by lazy {
+        ActivityAdapter(
+            onSetAdd = {
+                findNavController()
+                    .navigate(
+                        CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment()
+                    )
+            },
+            onSetClick = { set ->
+                findNavController()
+                    .navigate(CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment(set = set))
+            }
+        )
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pv239_fitness_tracker.data.Set
 import com.example.pv239_fitness_tracker.databinding.ItemWorkoutSetBinding
 
-class SetAdapter() : ListAdapter<Set, SetViewHolder>(SetDiffUtil()) {
+class SetAdapter(
+    private val onSetClick: (Set) -> Unit,
+) : ListAdapter<Set, SetViewHolder>(SetDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SetViewHolder =
         SetViewHolder(
@@ -17,7 +19,7 @@ class SetAdapter() : ListAdapter<Set, SetViewHolder>(SetDiffUtil()) {
         )
 
     override fun onBindViewHolder(holder: SetViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onSetClick)
     }
 }
 
@@ -25,9 +27,13 @@ class SetViewHolder(
     private val binding: ItemWorkoutSetBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: Set) {
+    fun bind(item: Set, onSetClick: (Set) -> Unit) {
         binding.weightAmountTextView.text = item.weight.toString()
         binding.repsAmountTextView.text = item.reps.toString()
+
+        binding.root.setOnClickListener {
+            onSetClick(item)
+        }
     }
 }
 
