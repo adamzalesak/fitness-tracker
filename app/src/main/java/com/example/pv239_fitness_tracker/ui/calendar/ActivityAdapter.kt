@@ -16,10 +16,6 @@ class ActivityAdapter(
     private val onSetClick: (Set) -> Unit,
 ) : ListAdapter<Activity, ActivityViewHolder>(ActivityDiffUtil()) {
 
-    private val setAdapter: SetAdapter by lazy {
-        SetAdapter(onSetClick= onSetClick)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder =
         ActivityViewHolder(
             ItemWorkoutActivityBinding
@@ -27,7 +23,7 @@ class ActivityAdapter(
         )
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        holder.bind(getItem(position), setAdapter, onSetAdd)
+        holder.bind(getItem(position), onSetAdd, onSetClick)
     }
 }
 
@@ -35,8 +31,10 @@ class ActivityViewHolder(
     private val binding: ItemWorkoutActivityBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: Activity, setAdapter: SetAdapter, onSetAdd: () -> Unit) {
+    fun bind(item: Activity, onSetAdd: () -> Unit, onSetClick: (Set) -> Unit) {
         binding.exerciseNameTextView.text = item.exercise.name
+
+        val setAdapter = SetAdapter(onSetClick = onSetClick)
 
         binding.setRecycler.layoutManager = LinearLayoutManager(itemView.context)
         binding.setRecycler.adapter = setAdapter
