@@ -33,7 +33,7 @@
             android:textSize="12sp"
             android:textColor="@color/black"
             android:layout_marginStart="5dp"
-            tools:text="kg" />
+            android:text="@string/set_weight_unit" />
     </LinearLayout>
 
     <LinearLayout
@@ -64,7 +64,7 @@
             android:textSize="12sp"
             android:textColor="@color/black"
             android:layout_marginStart="5dp"
-            tools:text="reps" />
+            android:text="@string/set_reps_unit" />
     </LinearLayout>
 
     <TextView

@@ -8,12 +8,40 @@
     <fragment
         android:id="@+id/calendar_fragment"
         android:name="com.example.pv239_fitness_tracker.ui.calendar.CalendarFragment"
-        android:label="@string/calendar_fragment_label"
+        android:label="CalendarFragment"
         tools:layout="@layout/fragment_calendar">
+        <action
+            android:id="@+id/action_setFragment_to_SetAddEditFragment"
+            app:destination="@id/add_edit_set_fragment" />
+        <action
+            android:id="@+id/action_activityFragment_to_ActivityAddFragment"
+            app:destination="@id/add_activity_fragment" />
     </fragment>
+
     <fragment
         android:id="@+id/exercises_fragment"
         android:name="com.example.pv239_fitness_tracker.ui.exercises.ExercisesFragment"
         android:label="ExercisesFragment"
         tools:layout="@layout/fragment_exercises" />
+
+    <fragment
+        android:id="@+id/add_activity_fragment"
+        android:name="com.example.pv239_fitness_tracker.ui.calendar.addedit.ActivityAddFragment"
+        android:label="ActivityAddFragment"
+        tools:layout="@layout/fragment_activity_add">
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_edit_set_fragment"
+        android:name="com.example.pv239_fitness_tracker.ui.calendar.addedit.SetAddEditFragment"
+        android:label="SetAddEditFragment"
+        tools:layout="@layout/fragment_set_add_edit">
+
+        <argument
+            android:name="set"
+            android:defaultValue="@null"
+            app:argType="com.example.pv239_fitness_tracker.data.Set"
+            app:nullable="true" />
+    </fragment>
+
 </navigation>
