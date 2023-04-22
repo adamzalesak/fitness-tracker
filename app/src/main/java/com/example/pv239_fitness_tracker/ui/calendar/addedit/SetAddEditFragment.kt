@@ -34,13 +34,24 @@ class SetAddEditFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
-            activityRepository.addOrUpdateSet(
-                id = args.set?.id,
-                weight = binding.weightEditText.text.toString().toDouble(),
-                reps = binding.repsEditText.text.toString().toInt(),
-                activityId = args.activityId,
-            )
-            findNavController().navigateUp()
+            val weightText = binding.weightEditText.text.toString()
+            val repsText = binding.repsEditText.text.toString()
+
+            if (weightText.isEmpty()) {
+                binding.weightEditText.error = "Please enter a value"
+            }
+            else if (repsText.isEmpty()) {
+                binding.repsEditText.error = "Please enter a value"
+            } else {
+                activityRepository.addOrUpdateSet(
+                    id = args.set?.id,
+                    weight = weightText.toDouble(),
+                    reps = repsText.toInt(),
+                    activityId = args.activityId,
+                )
+                findNavController().navigateUp()
+            }
+
         }
     }
 
