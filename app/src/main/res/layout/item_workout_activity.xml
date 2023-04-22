@@ -26,6 +26,7 @@
             tools:text="Bench Press"/>
 
         <TextView
+            android:id="@+id/activity_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"

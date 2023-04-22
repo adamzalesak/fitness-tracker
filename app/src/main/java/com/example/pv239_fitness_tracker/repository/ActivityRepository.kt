@@ -21,7 +21,9 @@ class ActivityRepository (
     private val exerciseDao: ExerciseDao = database.exerciseDao(),
 ) {
 
-    //TODO delete
+    fun deleteActivity(activity: Activity) {
+        activityDao.delete(activity.toEntity())
+    }
 
     fun addActivity(exercise: Exercise, date: LocalDate) {
         val activity = Activity(

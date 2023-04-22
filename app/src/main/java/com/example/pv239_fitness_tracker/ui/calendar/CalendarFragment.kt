@@ -1,6 +1,8 @@
 package com.example.pv239_fitness_tracker.ui.calendar
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +37,21 @@ class CalendarFragment : Fragment() {
 
     private val adapter: ActivityAdapter by lazy {
         ActivityAdapter(
+            onActivityDelete = { activity ->
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setMessage("Do you want to delete this activity?")
+                builder.setPositiveButton("Yes") { dialog, _ ->
+                    activityRepository.deleteActivity(activity)
+                    refreshList()
+                    dialog.cancel()
+                }
+                builder.setNegativeButton("No") { dialog, _ ->
+                    dialog.cancel()
+                }
+                val dialog = builder.create()
+                dialog.setTitle("Delete this activity")
+                dialog.show()
+            },
             onSetAdd = {
                 findNavController()
                     .navigate(
@@ -67,7 +84,7 @@ class CalendarFragment : Fragment() {
 
         binding.currentDate.setOnClickListener {
             val datePickerDialog = DatePickerDialog(requireContext(),
-                {view, year, month, dayOfMonth ->
+                {_, year, month, dayOfMonth ->
                     selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
                     refreshList()
                 },
