@@ -10,9 +10,11 @@
         android:name="com.example.pv239_fitness_tracker.ui.calendar.CalendarFragment"
         android:label="CalendarFragment"
         tools:layout="@layout/fragment_calendar">
+
         <action
             android:id="@+id/action_setFragment_to_SetAddEditFragment"
             app:destination="@id/add_edit_set_fragment" />
+
         <action
             android:id="@+id/action_activityFragment_to_ActivityAddFragment"
             app:destination="@id/add_activity_fragment" />
@@ -29,6 +31,10 @@
         android:name="com.example.pv239_fitness_tracker.ui.calendar.addedit.ActivityAddFragment"
         android:label="ActivityAddFragment"
         tools:layout="@layout/fragment_activity_add">
+
+        <argument
+            android:name="date"
+            app:argType="java.time.LocalDate" />
     </fragment>
 
     <fragment

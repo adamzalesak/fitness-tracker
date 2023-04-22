@@ -18,12 +18,21 @@ abstract class ActivityDatabase : RoomDatabase() {
     companion object {
         private const val NAME = "fitness_tracker.db"
 
-        fun create(context: Context): ActivityDatabase =
-            Room.databaseBuilder(context, ActivityDatabase::class.java, NAME)
+        fun create(context: Context): ActivityDatabase {
+            val database = Room.databaseBuilder(context, ActivityDatabase::class.java, NAME)
                 .allowMainThreadQueries()
                 .build()
+
+            //Seed basic exercises
+            database.exerciseDao().persist(ExerciseEntity(1, "Bench Press"))
+            database.exerciseDao().persist(ExerciseEntity(2, "Squat"))
+            database.exerciseDao().persist(ExerciseEntity(3, "Dead Lift"))
+
+            return database
+        }
     }
 
     abstract fun activityDao(): ActivityDao
     abstract fun setDao(): SetDao
+    abstract fun exerciseDao(): ExerciseDao
 }

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pv239_fitness_tracker.databinding.FragmentCalendarBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
 import com.example.pv239_fitness_tracker.util.DateUtil
@@ -27,8 +28,9 @@ class CalendarFragment : Fragment() {
         ActivityRepository(requireContext())
     }
 
-    private fun updateCurrentDate() {
+    private fun refreshList() {
         binding.currentDate.text = selectedDate.format(DateUtil.dateFormat)
+        adapter.submitList(activityRepository.getActivitiesForDate(selectedDate))
     }
 
     private val adapter: ActivityAdapter by lazy {
@@ -36,8 +38,7 @@ class CalendarFragment : Fragment() {
             onSetAdd = {
                 findNavController()
                     .navigate(
-                        CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment()
-                    )
+                        CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment())
             },
             onSetClick = { set ->
                 findNavController()
@@ -50,23 +51,25 @@ class CalendarFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        updateCurrentDate()
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.adapter = adapter
+        refreshList()
 
         binding.prevDay.setOnClickListener {
             selectedDate = selectedDate.minusDays(1)
-            updateCurrentDate()
+            refreshList()
         }
 
         binding.nextDay.setOnClickListener {
             selectedDate = selectedDate.plusDays(1)
-            updateCurrentDate()
+            refreshList()
         }
 
         binding.currentDate.setOnClickListener {
             val datePickerDialog = DatePickerDialog(requireContext(),
                 {view, year, month, dayOfMonth ->
                     selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
-                    updateCurrentDate()
+                    refreshList()
                 },
                 selectedDate.year,
                 selectedDate.monthValue - 1,
@@ -76,13 +79,10 @@ class CalendarFragment : Fragment() {
             datePickerDialog.show()
         }
 
-        adapter.submitList(activityRepository.getActivitiesForDate(selectedDate))
-
         binding.addActivityButton.setOnClickListener {
             findNavController()
                 .navigate(
-                    CalendarFragmentDirections.actionActivityFragmentToActivityAddFragment()
-                )
+                    CalendarFragmentDirections.actionActivityFragmentToActivityAddFragment(date = selectedDate))
         }
     }
 }
