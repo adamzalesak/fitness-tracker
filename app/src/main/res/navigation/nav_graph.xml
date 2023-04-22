@@ -48,6 +48,9 @@
             android:defaultValue="@null"
             app:argType="com.example.pv239_fitness_tracker.data.Set"
             app:nullable="true" />
+        <argument
+            android:name="activityId"
+            app:argType="long" />
     </fragment>
 
 </navigation>

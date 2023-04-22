@@ -22,6 +22,11 @@ class ActivityRepository (
 ) {
 
     fun deleteActivity(activity: Activity) {
+        //Delete all sets
+        for (set in setDao.selectSetsForActivity(activity.id)) {
+            setDao.delete(set)
+        }
+        //Delete activity
         activityDao.delete(activity.toEntity())
     }
 
@@ -33,6 +38,10 @@ class ActivityRepository (
             sets = emptyList(),
         )
         activityDao.persist(activity.toEntity())
+    }
+
+    fun deleteSet(set: Set, activity: Activity) {
+        setDao.delete(set.toEntity(activity.id))
     }
 
     fun addOrUpdateSet(weight: Double, reps: Int, activityId: Long, id: Long? = null) {

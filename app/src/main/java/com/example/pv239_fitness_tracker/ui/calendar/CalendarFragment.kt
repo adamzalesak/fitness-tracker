@@ -2,7 +2,6 @@ package com.example.pv239_fitness_tracker.ui.calendar
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,11 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pv239_fitness_tracker.data.Set
 import com.example.pv239_fitness_tracker.databinding.FragmentCalendarBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
 import com.example.pv239_fitness_tracker.util.DateUtil
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class CalendarFragment : Fragment() {
 
@@ -52,14 +51,14 @@ class CalendarFragment : Fragment() {
                 dialog.setTitle("Delete this activity")
                 dialog.show()
             },
-            onSetAdd = {
+            onSetAdd = { activityId: Long ->
                 findNavController()
                     .navigate(
-                        CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment())
+                        CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment(activityId = activityId))
             },
-            onSetClick = { set ->
+            onSetClick = { activityId: Long, set: Set ->
                 findNavController()
-                    .navigate(CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment(set = set))
+                    .navigate(CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment(activityId = activityId, set = set))
             }
         )
     }

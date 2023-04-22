@@ -13,8 +13,8 @@ import com.example.pv239_fitness_tracker.databinding.ItemWorkoutActivityBinding
 
 class ActivityAdapter(
     private val onActivityDelete: (Activity) -> Unit,
-    private val onSetAdd: () -> Unit,
-    private val onSetClick: (Set) -> Unit,
+    private val onSetAdd: (Long) -> Unit,
+    private val onSetClick: (Long, Set) -> Unit,
 ) : ListAdapter<Activity, ActivityViewHolder>(ActivityDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder =
@@ -34,8 +34,8 @@ class ActivityViewHolder(
 
     fun bind(item: Activity,
              onActivityDelete: (Activity) -> Unit,
-             onSetAdd: () -> Unit,
-             onSetClick: (Set) -> Unit,
+             onSetAdd: (Long) -> Unit,
+             onSetClick: (Long, Set) -> Unit,
     ) {
         binding.exerciseNameTextView.text = item.exercise.name
 
@@ -43,13 +43,13 @@ class ActivityViewHolder(
             onActivityDelete(item)
         }
 
-        val setAdapter = SetAdapter(onSetClick = onSetClick)
+        val setAdapter = SetAdapter(activityId = item.id, onSetClick = onSetClick)
 
         binding.setRecycler.layoutManager = LinearLayoutManager(itemView.context)
         binding.setRecycler.adapter = setAdapter
 
         binding.addSetButton.setOnClickListener {
-            onSetAdd()
+            onSetAdd(item.id)
         }
 
         setAdapter.submitList(item.sets)
