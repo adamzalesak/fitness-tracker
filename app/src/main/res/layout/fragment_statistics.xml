@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
             android:id="@+id/statistics_period_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -17,9 +17,30 @@
             android:clipToPadding="false"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
+            android:orientation="horizontal"
+            android:gravity="center"
             tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:orientation="horizontal"
-            tools:listitem="@layout/item_statistics_period" />
+            tools:listitem="@layout/item_statistics_period" >
+
+            <Button
+                android:id="@+id/statistics_button_daily"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/daily"/>
+            <Button
+                android:id="@+id/statistics_button_weekly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="@string/weekly"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/monthly" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/statistics_recycler"
