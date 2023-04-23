@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pv239_fitness_tracker.data.Activity
 import com.example.pv239_fitness_tracker.data.Exercise
@@ -15,6 +16,7 @@ class StatisticsFragment : Fragment() {
     private lateinit var binding: FragmentStatisticsBinding
     private lateinit var selectedExercise: Exercise
     private lateinit var selectedActivities: List<Activity>
+    private val args : StatisticsFragmentArgs by navArgs()
 
     private val activityRepository: ActivityRepository by lazy {
         ActivityRepository(requireContext())
@@ -31,6 +33,8 @@ class StatisticsFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+        selectedExercise = args.selectedExercise
 
         binding.statisticsRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
