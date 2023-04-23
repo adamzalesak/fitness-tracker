@@ -12,8 +12,10 @@ import com.example.pv239_fitness_tracker.data.Set
 import com.example.pv239_fitness_tracker.databinding.ItemWorkoutActivityBinding
 
 class ActivityAdapter(
-    private val onSetAdd: () -> Unit,
-    private val onSetClick: (Set) -> Unit,
+    private val onActivityDelete: (Activity) -> Unit,
+    private val onSetAdd: (Long) -> Unit,
+    private val onSetClick: (Long, Set) -> Unit,
+    private val onSetDelete: (Long, Set) -> Unit,
 ) : ListAdapter<Activity, ActivityViewHolder>(ActivityDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder =
@@ -23,7 +25,13 @@ class ActivityAdapter(
         )
 
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
-        holder.bind(getItem(position), onSetAdd, onSetClick)
+        holder.bind(
+            item = getItem(position),
+            onActivityDelete = onActivityDelete ,
+            onSetAdd = onSetAdd,
+            onSetClick = onSetClick,
+            onSetDelete = onSetDelete,
+        )
     }
 }
 
@@ -31,16 +39,29 @@ class ActivityViewHolder(
     private val binding: ItemWorkoutActivityBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(item: Activity, onSetAdd: () -> Unit, onSetClick: (Set) -> Unit) {
+    fun bind(item: Activity,
+             onActivityDelete: (Activity) -> Unit,
+             onSetAdd: (Long) -> Unit,
+             onSetClick: (Long, Set) -> Unit,
+             onSetDelete: (Long, Set) -> Unit,
+    ) {
         binding.exerciseNameTextView.text = item.exercise.name
 
-        val setAdapter = SetAdapter(onSetClick = onSetClick)
+        binding.activityDelete.setOnClickListener {
+            onActivityDelete(item)
+        }
+
+        val setAdapter = SetAdapter(
+            activityId = item.id,
+            onSetClick = onSetClick,
+            onSetDelete = onSetDelete,
+        )
 
         binding.setRecycler.layoutManager = LinearLayoutManager(itemView.context)
         binding.setRecycler.adapter = setAdapter
 
         binding.addSetButton.setOnClickListener {
-            onSetAdd()
+            onSetAdd(item.id)
         }
 
         setAdapter.submitList(item.sets)

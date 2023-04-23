@@ -8,12 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.pv239_fitness_tracker.databinding.FragmentSetAddEditBinding
+import com.example.pv239_fitness_tracker.repository.ActivityRepository
 
 class SetAddEditFragment : Fragment() {
 
     private lateinit var binding: FragmentSetAddEditBinding
 
     private val args: SetAddEditFragmentArgs by navArgs()
+    private val activityRepository: ActivityRepository by lazy {
+        ActivityRepository(requireContext())
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSetAddEditBinding.inflate(layoutInflater, container, false)
@@ -30,7 +34,24 @@ class SetAddEditFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
-            findNavController().navigateUp()
+            val weightText = binding.weightEditText.text.toString()
+            val repsText = binding.repsEditText.text.toString()
+
+            if (weightText.isEmpty()) {
+                binding.weightEditText.error = "Please enter a value"
+            }
+            else if (repsText.isEmpty()) {
+                binding.repsEditText.error = "Please enter a value"
+            } else {
+                activityRepository.addOrUpdateSet(
+                    id = args.set?.id,
+                    weight = weightText.toDouble(),
+                    reps = repsText.toInt(),
+                    activityId = args.activityId,
+                )
+                findNavController().navigateUp()
+            }
+
         }
     }
 

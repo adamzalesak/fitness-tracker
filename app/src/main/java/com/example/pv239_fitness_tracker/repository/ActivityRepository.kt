@@ -21,7 +21,14 @@ class ActivityRepository (
     private val exerciseDao: ExerciseDao = database.exerciseDao(),
 ) {
 
-    //TODO delete
+    fun deleteActivity(activity: Activity) {
+        //Delete all sets
+        for (set in setDao.selectSetsForActivity(activity.id)) {
+            setDao.delete(set)
+        }
+        //Delete activity
+        activityDao.delete(activity.toEntity())
+    }
 
     fun addActivity(exercise: Exercise, date: LocalDate) {
         val activity = Activity(
@@ -31,6 +38,10 @@ class ActivityRepository (
             sets = emptyList(),
         )
         activityDao.persist(activity.toEntity())
+    }
+
+    fun deleteSet(set: Set, activityId: Long) {
+        setDao.delete(set.toEntity(activityId))
     }
 
     fun addOrUpdateSet(weight: Double, reps: Int, activityId: Long, id: Long? = null) {

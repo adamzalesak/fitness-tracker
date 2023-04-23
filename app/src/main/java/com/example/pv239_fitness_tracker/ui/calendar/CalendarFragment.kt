@@ -1,5 +1,6 @@
 package com.example.pv239_fitness_tracker.ui.calendar
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,11 +9,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pv239_fitness_tracker.data.Set
 import com.example.pv239_fitness_tracker.databinding.FragmentCalendarBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
 import com.example.pv239_fitness_tracker.util.DateUtil
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 class CalendarFragment : Fragment() {
 
@@ -35,14 +36,44 @@ class CalendarFragment : Fragment() {
 
     private val adapter: ActivityAdapter by lazy {
         ActivityAdapter(
-            onSetAdd = {
+            onActivityDelete = { activity ->
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setMessage("Do you want to delete this activity?")
+                builder.setPositiveButton("Yes") { dialog, _ ->
+                    activityRepository.deleteActivity(activity)
+                    refreshList()
+                    dialog.cancel()
+                }
+                builder.setNegativeButton("No") { dialog, _ ->
+                    dialog.cancel()
+                }
+                val dialog = builder.create()
+                dialog.setTitle("Delete this activity")
+                dialog.show()
+            },
+            onSetAdd = { activityId: Long ->
                 findNavController()
                     .navigate(
-                        CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment())
+                        CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment(activityId = activityId))
             },
-            onSetClick = { set ->
+            onSetClick = { activityId: Long, set: Set ->
                 findNavController()
-                    .navigate(CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment(set = set))
+                    .navigate(CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment(activityId = activityId, set = set))
+            },
+            onSetDelete = { activityId: Long, set: Set ->
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setMessage("Do you want to delete this set?")
+                builder.setPositiveButton("Yes") { dialog, _ ->
+                    activityRepository.deleteSet(set, activityId)
+                    refreshList()
+                    dialog.cancel()
+                }
+                builder.setNegativeButton("No") { dialog, _ ->
+                    dialog.cancel()
+                }
+                val dialog = builder.create()
+                dialog.setTitle("Delete this set")
+                dialog.show()
             }
         )
     }
@@ -67,7 +98,7 @@ class CalendarFragment : Fragment() {
 
         binding.currentDate.setOnClickListener {
             val datePickerDialog = DatePickerDialog(requireContext(),
-                {view, year, month, dayOfMonth ->
+                {_, year, month, dayOfMonth ->
                     selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
                     refreshList()
                 },
