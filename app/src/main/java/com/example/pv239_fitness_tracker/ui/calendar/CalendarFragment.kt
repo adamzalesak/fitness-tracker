@@ -59,6 +59,21 @@ class CalendarFragment : Fragment() {
             onSetClick = { activityId: Long, set: Set ->
                 findNavController()
                     .navigate(CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment(activityId = activityId, set = set))
+            },
+            onSetDelete = { activityId: Long, set: Set ->
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setMessage("Do you want to delete this set?")
+                builder.setPositiveButton("Yes") { dialog, _ ->
+                    activityRepository.deleteSet(set, activityId)
+                    refreshList()
+                    dialog.cancel()
+                }
+                builder.setNegativeButton("No") { dialog, _ ->
+                    dialog.cancel()
+                }
+                val dialog = builder.create()
+                dialog.setTitle("Delete this set")
+                dialog.show()
             }
         )
     }

@@ -40,8 +40,8 @@ class ActivityRepository (
         activityDao.persist(activity.toEntity())
     }
 
-    fun deleteSet(set: Set, activity: Activity) {
-        setDao.delete(set.toEntity(activity.id))
+    fun deleteSet(set: Set, activityId: Long) {
+        setDao.delete(set.toEntity(activityId))
     }
 
     fun addOrUpdateSet(weight: Double, reps: Int, activityId: Long, id: Long? = null) {
