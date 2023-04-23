@@ -18,4 +18,6 @@ interface ActivityDao {
     @Query("SELECT * FROM ActivityEntity WHERE date = :date")
     fun selectActivitiesForDate(date: String): List<ActivityEntity>
 
+    @Query("SELECT * FROM ActivityEntity WHERE exerciseId = :id")
+    fun selectActivitiesForExercise(id: Long): List<ActivityEntity>
 }

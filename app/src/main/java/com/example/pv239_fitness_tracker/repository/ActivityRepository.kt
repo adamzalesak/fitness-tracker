@@ -63,4 +63,8 @@ class ActivityRepository (
             setDao.persist(activity.sets.map { it.toEntity(activity.id) })
         }
     }
+
+    fun getActivitiesForExercise(id: Long): List<Activity> =
+        activityDao.selectActivitiesForExercise(id)
+            .map { it.toAppData(setDao.selectSetsForActivity(it.id), exerciseDao.selectExerciseById(it.exerciseId)) }
 }
