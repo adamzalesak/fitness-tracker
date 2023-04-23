@@ -14,6 +14,7 @@ import com.example.pv239_fitness_tracker.repository.ActivityRepository
 class StatisticsFragment : Fragment() {
     private lateinit var binding: FragmentStatisticsBinding
     private lateinit var selectedExercise: Exercise
+    private lateinit var selectedActivities: List<Activity>
 
     private val activityRepository: ActivityRepository by lazy {
         ActivityRepository(requireContext())
@@ -36,14 +37,59 @@ class StatisticsFragment : Fragment() {
         val adapter = StatisticsAdapter()
         binding.statisticsRecycler.adapter = adapter
 
-        val activities = activityRepository.getActivitiesForExercise(selectedExercise.id)
-        val stats = mapToStatData(activities)
+        selectedActivities = activityRepository.getActivitiesForExercise(selectedExercise.id)
+        val stats = mapToStatDataByMonth()
         adapter.submitList(stats)
+
+        binding.statisticsButtonDaily.setOnClickListener {
+            displayDailyStats()
+        }
+
+        binding.statisticsButtonMonthly.setOnClickListener {
+            displayMonthlyStats()
+        }
+
+        binding.statisticsButtonDayOfWeek.setOnClickListener {
+            displayDayOfWeekStats()
+        }
     }
 
-    private fun mapToStatData(activities: List<Activity>) : List<StatsData> {
-        val groups = activities.groupBy { it.date.month }
+    private fun mapToStatDataByMonth() : List<StatsData> {
+        val groups = selectedActivities.groupBy { it.date.month }
         val data = groups.map { (k, v) -> StatsData(k.name, v.maxOf { activity -> activity.sets.maxOf { set -> set.weight} } ) }
         return data
+    }
+
+    private fun mapToStatDataByDayOfWeek() : List<StatsData> {
+        val groups = selectedActivities.groupBy { it.date.dayOfWeek }
+        val data = groups.map { (k, v) -> StatsData(k.name, v.maxOf { activity -> activity.sets.maxOf { set -> set.weight} } ) }
+        return data
+    }
+
+    private fun mapToStatDataByDay() : List<StatsData> {
+        val groups = selectedActivities.groupBy { it.date.dayOfMonth }
+        val data = groups.map { (k, v) -> StatsData(k.toString(), v.maxOf { activity -> activity.sets.maxOf { set -> set.weight} } ) }
+        return data
+    }
+
+    private fun displayMonthlyStats() {
+        val data = mapToStatDataByMonth()
+        val adapter = StatisticsAdapter()
+        adapter.submitList(data)
+        binding.statisticsRecycler.swapAdapter(adapter, true)
+    }
+
+    private fun displayDailyStats() {
+        val data = mapToStatDataByDay()
+        val adapter = StatisticsAdapter()
+        adapter.submitList(data)
+        binding.statisticsRecycler.swapAdapter(adapter, true)
+    }
+
+    private fun displayDayOfWeekStats() {
+        val data = mapToStatDataByDayOfWeek()
+        val adapter = StatisticsAdapter()
+        adapter.submitList(data)
+        binding.statisticsRecycler.swapAdapter(adapter, true)
     }
 }

@@ -29,13 +29,14 @@
                 android:layout_height="wrap_content"
                 android:text="@string/daily"/>
             <Button
-                android:id="@+id/statistics_button_weekly"
+                android:id="@+id/statistics_button_dayOfWeek"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:text="@string/weekly"/>
+                android:text="@string/dayOfWeek"/>
 
             <Button
+                android:id="@+id/statistics_button_monthly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/monthly" />
