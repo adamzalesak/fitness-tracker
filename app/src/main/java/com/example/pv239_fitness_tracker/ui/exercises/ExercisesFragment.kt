@@ -1,5 +1,6 @@
 package com.example.pv239_fitness_tracker.ui.exercises
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pv239_fitness_tracker.R
 import com.example.pv239_fitness_tracker.data.Exercise
 import com.example.pv239_fitness_tracker.databinding.FragmentExercisesBinding
+import com.example.pv239_fitness_tracker.repository.ExerciseRepository
 
 
 class ExercisesFragment : Fragment() {
@@ -23,35 +26,54 @@ class ExercisesFragment : Fragment() {
         return binding.root
     }
 
+    private val exerciseRepository: ExerciseRepository by lazy {
+        ExerciseRepository(requireContext())
+    }
+
+    private fun refreshList() {
+        adapter.submitList(exerciseRepository.getAllExercises())
+    }
+
+    private val adapter =
+        ExercisesAdapter(
+            onExerciseClick = { exercise: Exercise ->
+                findNavController()
+                    .navigate(
+                        ExercisesFragmentDirections.actionExercisesFragmentToFragmentExerciseAddEdit(
+                            exercise
+                        )
+                    )
+            },
+            onExerciseDelete = { exercise: Exercise ->
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setMessage(getString(R.string.delete_exercise_message))
+                builder.setPositiveButton(getString(R.string.delete_exercise_positive_button)) { dialog, _ ->
+                    exerciseRepository.deleteExercise(exercise)
+                    refreshList()
+                    dialog.cancel()
+                }
+                builder.setNegativeButton(getString(R.string.delete_exercise_negative_button)) { dialog, _ ->
+                    dialog.cancel()
+                }
+                val dialog = builder.create()
+                dialog.setTitle(getString(R.string.delete_exercise_title))
+                dialog.show()
+            }
+        )
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val exerciseList = listOf(
-            Exercise(1, "Exercise 1"),
-            Exercise(2, "Exercise 2"),
-            Exercise(3, "Exercise 3"),
-            Exercise(4, "Exercise 4"),
-            Exercise(5, "Exercise 5"),
-            Exercise(6, "Exercise 6"),
-            Exercise(7, "Exercise 7"),
-            Exercise(8, "Exercise 8"),
-            Exercise(9, "Exercise 9"),
-            Exercise(10, "Exercise 10"),
-            Exercise(11, "Exercise 11"),
-            Exercise(12, "Exercise 12"),
-            Exercise(13, "Exercise 13"),
-            Exercise(14, "Exercise 14"),
-            Exercise(15, "Exercise 15"),
-        )
-
-        val adapter = ExercisesAdapter(exerciseList)
         binding.listExercises.layoutManager = LinearLayoutManager(context)
         binding.listExercises.adapter = adapter
+
+        refreshList()
 
         binding.addExerciseButton.setOnClickListener {
             findNavController()
                 .navigate(
-                    ExercisesFragmentDirections.actionExercisesFragmentToFragmentExerciseAdd()
+                    ExercisesFragmentDirections.actionExercisesFragmentToFragmentExerciseAddEdit()
                 )
         }
     }

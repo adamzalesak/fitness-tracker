@@ -23,10 +23,13 @@ abstract class ActivityDatabase : RoomDatabase() {
                 .allowMainThreadQueries()
                 .build()
 
-            //Seed basic exercises
-            database.exerciseDao().persist(ExerciseEntity(1, "Bench Press"))
-            database.exerciseDao().persist(ExerciseEntity(2, "Squat"))
-            database.exerciseDao().persist(ExerciseEntity(3, "Dead Lift"))
+            // seed basic exercises if there are none
+            if (database.exerciseDao().selectAllExercises().isEmpty())
+            {
+                database.exerciseDao().persist(ExerciseEntity(1, "Bench Press"))
+                database.exerciseDao().persist(ExerciseEntity(2, "Squat"))
+                database.exerciseDao().persist(ExerciseEntity(3, "Dead Lift"))
+            }
 
             return database
         }

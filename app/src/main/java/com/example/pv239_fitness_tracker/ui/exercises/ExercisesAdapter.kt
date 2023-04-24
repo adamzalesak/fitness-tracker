@@ -1,33 +1,64 @@
 package com.example.pv239_fitness_tracker.ui.exercises
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pv239_fitness_tracker.R
 import com.example.pv239_fitness_tracker.data.Exercise
+import com.example.pv239_fitness_tracker.databinding.ItemExerciseBinding
 
 
-class ExercisesAdapter(private val dataList: List<Exercise>) :
-    RecyclerView.Adapter<ExercisesViewHolder>() {
+class ExercisesAdapter(
+    private val onExerciseClick: (Exercise) -> Unit,
+    private val onExerciseDelete: (Exercise) -> Unit,
+) : ListAdapter<Exercise, ExercisesViewHolder>(ExerciseDiffUtil()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExercisesViewHolder {
-        val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_exercise, parent, false)
-        return ExercisesViewHolder(itemView)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExercisesViewHolder =
+        ExercisesViewHolder(
+            ItemExerciseBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
+
 
     override fun onBindViewHolder(holder: ExercisesViewHolder, position: Int) {
-        val data = dataList[position]
-        holder.titleTextView.text = data.name
-    }
-
-    override fun getItemCount(): Int {
-        return dataList.size
+        holder.bind(
+            item = getItem(position),
+            onExerciseClick = onExerciseClick,
+            onExerciseDelete = onExerciseDelete,
+        )
     }
 }
 
-class ExercisesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val titleTextView: TextView = itemView.findViewById(R.id.exercise_item_name_text_view)
+
+class ExercisesViewHolder(
+    private val binding: ItemExerciseBinding
+) : RecyclerView.ViewHolder(binding.root) {
+
+    fun bind(
+        item: Exercise,
+        onExerciseClick: (Exercise) -> Unit,
+        onExerciseDelete: (Exercise) -> Unit
+    ) {
+        binding.exerciseItemNameTextView.text = item.name
+
+        binding.root.setOnClickListener {
+            onExerciseClick(item)
+        }
+
+        binding.exerciseItemDeleteButton.setOnClickListener {
+            onExerciseDelete(item)
+        }
+    }
+}
+
+class ExerciseDiffUtil : DiffUtil.ItemCallback<Exercise>() {
+    override fun areItemsTheSame(oldItem: Exercise, newItem: Exercise): Boolean =
+        oldItem.id == newItem.id
+
+    override fun areContentsTheSame(oldItem: Exercise, newItem: Exercise): Boolean =
+        oldItem == newItem
 }
