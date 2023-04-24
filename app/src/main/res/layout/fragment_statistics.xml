@@ -31,7 +31,8 @@
                 android:src="@drawable/baseline_keyboard_arrow_left_50"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:contentDescription="@string/back"/>
 
             <TextView
                 android:id="@+id/header"
