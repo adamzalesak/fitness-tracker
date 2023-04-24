@@ -18,5 +18,8 @@
     <string name="set_weight_unit">kg</string>
     <string name="set_reps_unit">reps</string>
 
+    <string name="daily">Day</string>
+    <string name="dayOfWeek">Day of week</string>
+    <string name="monthly">Month</string>
     <string name="graph_statistics_maximums">Maximums</string>
 </resources>
