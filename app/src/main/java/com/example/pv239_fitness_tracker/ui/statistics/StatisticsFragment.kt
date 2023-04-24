@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pv239_fitness_tracker.data.Activity
@@ -44,6 +45,10 @@ class StatisticsFragment : Fragment() {
         selectedActivities = activityRepository.getActivitiesForExercise(selectedExercise.id)
         val stats = mapToStatDataByMonth()
         adapter.submitList(stats)
+
+        binding.buttonBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
         binding.statisticsButtonDaily.setOnClickListener {
             displayDailyStats()
