@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pv239_fitness_tracker.R
 import com.example.pv239_fitness_tracker.data.Set
 import com.example.pv239_fitness_tracker.databinding.FragmentCalendarBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
