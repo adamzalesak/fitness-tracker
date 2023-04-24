@@ -33,6 +33,9 @@
         <action
             android:id="@+id/action_exercises_fragment_to_statisticsFragment"
             app:destination="@id/statisticsFragment" />
+        <action
+            android:id="@+id/action_exercises_fragment_to_fragment_exercise_add"
+            app:destination="@id/fragment_exercise_add" />
     </fragment>
 
     <fragment
@@ -73,5 +76,11 @@
             android:name="selectedExercise"
             app:argType="com.example.pv239_fitness_tracker.data.Exercise" />
     </fragment>
+
+    <fragment
+        android:id="@+id/fragment_exercise_add"
+        android:name="com.example.pv239_fitness_tracker.ui.exercises.ExerciseAddFragment"
+        android:label="ExerciseAddFragment"
+        tools:layout="@layout/fragment_exercise_add" />
 
 </navigation>

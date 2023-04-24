@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pv239_fitness_tracker.data.Exercise
 import com.example.pv239_fitness_tracker.databinding.FragmentExercisesBinding
@@ -46,6 +47,13 @@ class ExercisesFragment : Fragment() {
         val adapter = ExercisesAdapter(exerciseList)
         binding.listExercises.layoutManager = LinearLayoutManager(context)
         binding.listExercises.adapter = adapter
+
+        binding.addExerciseButton.setOnClickListener {
+            findNavController()
+                .navigate(
+                    ExercisesFragmentDirections.actionExercisesFragmentToFragmentExerciseAdd()
+                )
+        }
     }
 }
 

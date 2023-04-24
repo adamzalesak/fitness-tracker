@@ -5,6 +5,8 @@
 
     <string name="add_set">Add set</string>
     <string name="add_activity">Add activity</string>
+    <string name="add_exercise">Add exercise</string>
+    <string name="add_exercise_name_input_hint">Exercise name</string>
 
     <string name="next">Next</string>
     <string name="previous">Previous</string>
