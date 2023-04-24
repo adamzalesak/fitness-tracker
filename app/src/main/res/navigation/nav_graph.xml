@@ -12,12 +12,16 @@
         tools:layout="@layout/fragment_calendar">
 
         <action
-            android:id="@+id/action_setFragment_to_SetAddEditFragment"
+            android:id="@+id/action_calendar_fragment_to_SetAddEditFragment"
             app:destination="@id/add_edit_set_fragment" />
 
         <action
-            android:id="@+id/action_activityFragment_to_ActivityAddFragment"
+            android:id="@+id/action_calendar_fragment_to_ActivityAddFragment"
             app:destination="@id/add_activity_fragment" />
+
+        <action
+            android:id="@+id/action_calendar_fragment_to_statisticsFragment"
+            app:destination="@id/statisticsFragment" />
     </fragment>
 
     <fragment
@@ -25,6 +29,7 @@
         android:name="com.example.pv239_fitness_tracker.ui.exercises.ExercisesFragment"
         android:label="ExercisesFragment"
         tools:layout="@layout/fragment_exercises" >
+
         <action
             android:id="@+id/action_exercises_fragment_to_statisticsFragment"
             app:destination="@id/statisticsFragment" />
@@ -52,14 +57,18 @@
             android:defaultValue="@null"
             app:argType="com.example.pv239_fitness_tracker.data.Set"
             app:nullable="true" />
+
         <argument
             android:name="activityId"
             app:argType="long" />
     </fragment>
+
     <fragment
         android:id="@+id/statisticsFragment"
         android:name="com.example.pv239_fitness_tracker.ui.statistics.StatisticsFragment"
-        android:label="StatisticsFragment" >
+        android:label="StatisticsFragment"
+        tools:layout="@layout/fragment_statistics">
+
         <argument
             android:name="selectedExercise"
             app:argType="com.example.pv239_fitness_tracker.data.Exercise" />

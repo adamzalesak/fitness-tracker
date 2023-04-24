@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pv239_fitness_tracker.R
 import com.example.pv239_fitness_tracker.data.Set
 import com.example.pv239_fitness_tracker.databinding.FragmentCalendarBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
@@ -36,6 +37,10 @@ class CalendarFragment : Fragment() {
 
     private val adapter: ActivityAdapter by lazy {
         ActivityAdapter(
+            onActivityClick = { activity ->
+                findNavController()
+                    .navigate(CalendarFragmentDirections.actionCalendarFragmentToStatisticsFragment(selectedExercise = activity.exercise))
+            },
             onActivityDelete = { activity ->
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage("Do you want to delete this activity?")
@@ -54,11 +59,11 @@ class CalendarFragment : Fragment() {
             onSetAdd = { activityId: Long ->
                 findNavController()
                     .navigate(
-                        CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment(activityId = activityId))
+                        CalendarFragmentDirections.actionCalendarFragmentToSetAddEditFragment(activityId = activityId))
             },
             onSetClick = { activityId: Long, set: Set ->
                 findNavController()
-                    .navigate(CalendarFragmentDirections.actionSetFragmentToSetAddEditFragment(activityId = activityId, set = set))
+                    .navigate(CalendarFragmentDirections.actionCalendarFragmentToSetAddEditFragment(activityId = activityId, set = set))
             },
             onSetDelete = { activityId: Long, set: Set ->
                 val builder = AlertDialog.Builder(requireContext())
@@ -113,7 +118,7 @@ class CalendarFragment : Fragment() {
         binding.addActivityButton.setOnClickListener {
             findNavController()
                 .navigate(
-                    CalendarFragmentDirections.actionActivityFragmentToActivityAddFragment(date = selectedDate))
+                    CalendarFragmentDirections.actionCalendarFragmentToActivityAddFragment(date = selectedDate))
         }
     }
 }
