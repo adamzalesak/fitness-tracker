@@ -47,16 +47,6 @@
         <argument
             android:name="date"
             app:argType="java.time.LocalDate" />
-
-        <argument
-            android:name="selectedExercise"
-            app:argType="com.example.pv239_fitness_tracker.data.Exercise"
-            app:nullable="true"
-            android:defaultValue="@null" />
-
-        <action
-            android:id="@+id/action_add_activity_fragment_to_exercises_bottom_sheet"
-            app:destination="@id/bottom_sheet_select_exercise" />
     </fragment>
 
     <fragment
@@ -99,20 +89,5 @@
             app:argType="com.example.pv239_fitness_tracker.data.Exercise"
             app:nullable="true" />
     </fragment>
-
-    <dialog
-        android:id="@+id/bottom_sheet_select_exercise"
-        android:name="com.example.pv239_fitness_tracker.ui.calendar.addedit.SelectExerciseBottomSheet"
-        android:label="SelectExerciseBottomSheet"
-        tools:layout="@layout/bottom_sheet_exercise_select">
-
-        <argument
-            android:name="date"
-            app:argType="java.time.LocalDate" />
-
-        <action
-            android:id="@+id/action_exercises_bottom_sheet_to_addActivityFragment"
-            app:destination="@id/add_activity_fragment" />
-    </dialog>
 
 </navigation>

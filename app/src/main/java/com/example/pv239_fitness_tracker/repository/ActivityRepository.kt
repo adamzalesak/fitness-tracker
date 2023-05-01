@@ -70,4 +70,7 @@ class ActivityRepository (
 
     fun getDefaultExercise(): Exercise =
         exerciseDao.selectExerciseById(1).toAppData()
+
+    fun getAllExercises(): List<Exercise> =
+        exerciseDao.selectAllExercises().map {it.toAppData()}
 }
