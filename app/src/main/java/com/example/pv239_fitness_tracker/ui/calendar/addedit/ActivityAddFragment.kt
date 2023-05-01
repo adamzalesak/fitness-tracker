@@ -32,15 +32,22 @@ class ActivityAddFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        binding.saveButton.setOnClickListener {
-            //TODO handle exercises? idk
-            val activityExercise = binding.activityEditText.text.toString()
+        var exercise = args.selectedExercise
+        if (exercise == null) {
+            exercise = activityRepository.getDefaultExercise()
+        }
 
-            activityRepository.addActivity(Exercise(1, "Bench Press"), args.date)
+        binding.exerciseTextView.text = exercise.name
+        binding.exerciseTextView.setOnClickListener {
+            findNavController()
+                .navigate(
+                    ActivityAddFragmentDirections.actionAddActivityFragmentToExercisesBottomSheet(args.date)
+                )
+        }
+
+        binding.saveButton.setOnClickListener {
+            activityRepository.addActivity(exercise, args.date)
             findNavController().navigateUp()
         }
     }
-
-
-
 }

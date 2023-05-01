@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/light_grey"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -56,26 +57,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header_layout" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/activity_text_input_layout"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/exercise_text_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textSize="20sp"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="TODO change to dropdown"
-        app:expandedHintEnabled="true"
+        android:background="@color/white"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/shadow">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/activity_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="numberDecimal" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        app:layout_constraintTop_toBottomOf="@id/shadow"
+        tools:text="Bench Press"/>
 
     <Button
         android:id="@+id/saveButton"
