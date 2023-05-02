@@ -2,21 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:background="@color/light_grey"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
         android:text="@string/select_exercise"
         android:textSize="20sp"
-        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:textStyle="bold"
         android:textColor="@color/black"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:alpha="0.2"
+        android:alpha="0.4"
         android:background="@color/black"/>
 
     <androidx.recyclerview.widget.RecyclerView
