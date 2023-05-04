@@ -12,6 +12,8 @@
         android:layout_height="match_parent"
         android:background="@color/light_grey"
         android:scrollbars="vertical"
+        android:paddingBottom="70dp"
+        android:clipToPadding="false"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
