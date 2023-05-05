@@ -42,13 +42,16 @@ class StatisticsFragment : Fragment() {
         val adapter = StatisticsAdapter()
         binding.statisticsRecycler.adapter = adapter
 
-        selectedActivities = activityRepository.getActivitiesForExercise(selectedExercise.id)
-        val stats = mapToStatDataByMonth()
-        adapter.submitList(stats)
-
         binding.buttonBack.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        selectedActivities = activityRepository.getActivitiesForExercise(selectedExercise.id)
+        if (isEmptyExercise())
+            return
+
+        val stats = mapToStatDataByMonth()
+        adapter.submitList(stats)
 
         binding.statisticsButtonDaily.setOnClickListener {
             displayDailyStats()
@@ -61,6 +64,13 @@ class StatisticsFragment : Fragment() {
         binding.statisticsButtonDayOfWeek.setOnClickListener {
             displayDayOfWeekStats()
         }
+    }
+
+    private fun isEmptyExercise() : Boolean {
+        if (selectedActivities.isEmpty())
+            return true
+        val setCount = selectedActivities.map { activity -> activity.sets.count() }.sum()
+        return setCount == 0
     }
 
     private fun mapToStatDataByMonth() : List<StatsData> {
