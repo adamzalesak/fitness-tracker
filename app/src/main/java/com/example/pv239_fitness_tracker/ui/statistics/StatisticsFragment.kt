@@ -12,6 +12,11 @@ import com.example.pv239_fitness_tracker.data.Activity
 import com.example.pv239_fitness_tracker.data.Exercise
 import com.example.pv239_fitness_tracker.databinding.FragmentStatisticsBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
+import com.github.mikephil.charting.components.YAxis.AxisDependency
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 
 class StatisticsFragment : Fragment() {
     private lateinit var binding: FragmentStatisticsBinding
@@ -50,6 +55,10 @@ class StatisticsFragment : Fragment() {
         if (isEmptyExercise())
             return
 
+        binding.lineChart.data = mapToGraphDataByMonth()
+        binding.lineChart.xAxis.granularity = 1f
+        binding.lineChart.invalidate()
+
         val stats = mapToStatDataByMonth()
         adapter.submitList(stats)
 
@@ -73,6 +82,54 @@ class StatisticsFragment : Fragment() {
         return setCount == 0
     }
 
+    private fun mapToGraphDataByMonth() : LineData {
+        val groups = selectedActivities.groupBy { it.date.month }
+        val entries = mutableListOf<Entry>()
+        groups.iterator().forEach {
+            val max = it.value.maxOf { activity -> activity.sets.maxOf { set -> set.weight } }
+            val x = it.key.value
+            entries.add(Entry(x.toFloat(), max.toFloat()))
+        }
+        entries.sortBy { entry -> entry.x }
+        val dataSet = LineDataSet(entries, "Max")
+        dataSet.axisDependency = AxisDependency.LEFT
+        val datasets = mutableListOf<ILineDataSet>()
+        datasets.add(dataSet)
+        return LineData(datasets)
+    }
+
+    private fun mapToGraphDataByDay() : LineData {
+        val groups = selectedActivities.groupBy { it.date.dayOfMonth }
+        val entries = mutableListOf<Entry>()
+        groups.iterator().forEach {
+            val max = it.value.maxOf { activity -> activity.sets.maxOf { set -> set.weight } }
+            val x = it.key
+            entries.add(Entry(x.toFloat(), max.toFloat()))
+        }
+        entries.sortBy { entry -> entry.x }
+        val dataSet = LineDataSet(entries, "Max")
+        dataSet.axisDependency = AxisDependency.LEFT
+        val datasets = mutableListOf<ILineDataSet>()
+        datasets.add(dataSet)
+        return LineData(datasets)
+    }
+
+    private fun mapToGraphDataByDayOfWeek() : LineData {
+        val groups = selectedActivities.groupBy { it.date.dayOfWeek }
+        val entries = mutableListOf<Entry>()
+        groups.iterator().forEach {
+            val max = it.value.maxOf { activity -> activity.sets.maxOf { set -> set.weight } }
+            val x = it.key.value
+            entries.add(Entry(x.toFloat(), max.toFloat()))
+        }
+        entries.sortBy { entry -> entry.x }
+        val dataSet = LineDataSet(entries, "Max")
+        dataSet.axisDependency = AxisDependency.LEFT
+        val datasets = mutableListOf<ILineDataSet>()
+        datasets.add(dataSet)
+        return LineData(datasets)
+    }
+
     private fun mapToStatDataByMonth() : List<StatsData> {
         val groups = selectedActivities.groupBy { it.date.month }
         val data = groups.map { (k, v) -> StatsData(k.name, v.maxOf { activity -> activity.sets.maxOf { set -> set.weight} } ) }
@@ -94,21 +151,30 @@ class StatisticsFragment : Fragment() {
     private fun displayMonthlyStats() {
         val data = mapToStatDataByMonth()
         val adapter = StatisticsAdapter()
+        val gData = mapToGraphDataByMonth()
         adapter.submitList(data)
         binding.statisticsRecycler.swapAdapter(adapter, true)
+        binding.lineChart.data = gData
+        binding.lineChart.invalidate()
     }
 
     private fun displayDailyStats() {
         val data = mapToStatDataByDay()
         val adapter = StatisticsAdapter()
+        val gData = mapToGraphDataByDay()
         adapter.submitList(data)
         binding.statisticsRecycler.swapAdapter(adapter, true)
+        binding.lineChart.data = gData
+        binding.lineChart.invalidate()
     }
 
     private fun displayDayOfWeekStats() {
         val data = mapToStatDataByDayOfWeek()
         val adapter = StatisticsAdapter()
+        val gData = mapToGraphDataByDayOfWeek()
         adapter.submitList(data)
         binding.statisticsRecycler.swapAdapter(adapter, true)
+        binding.lineChart.data = gData
+        binding.lineChart.invalidate()
     }
 }
