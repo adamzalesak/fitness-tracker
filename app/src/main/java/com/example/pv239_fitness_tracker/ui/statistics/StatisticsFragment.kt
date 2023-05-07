@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import java.time.LocalDate
 
 class StatisticsFragment : Fragment() {
     private lateinit var binding: FragmentStatisticsBinding
@@ -83,7 +84,7 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun mapToGraphDataByMonth() : LineData {
-        val groups = selectedActivities.groupBy { it.date.month }
+        val groups = selectedActivities.filter { activity -> activity.date.plusYears(1).isAfter(LocalDate.now()) }.groupBy { it.date.month }
         val entries = mutableListOf<Entry>()
         groups.iterator().forEach {
             val max = it.value.maxOf { activity -> activity.sets.maxOf { set -> set.weight } }
@@ -99,7 +100,7 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun mapToGraphDataByDay() : LineData {
-        val groups = selectedActivities.groupBy { it.date.dayOfMonth }
+        val groups = selectedActivities.filter { activity -> activity.date.plusMonths(1).isAfter(LocalDate.now()) }.groupBy { it.date.dayOfMonth }
         val entries = mutableListOf<Entry>()
         groups.iterator().forEach {
             val max = it.value.maxOf { activity -> activity.sets.maxOf { set -> set.weight } }
@@ -115,7 +116,7 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun mapToGraphDataByDayOfWeek() : LineData {
-        val groups = selectedActivities.groupBy { it.date.dayOfWeek }
+        val groups = selectedActivities.filter { activity -> activity.date.plusDays(7).isAfter(LocalDate.now()) }.groupBy { it.date.dayOfWeek }
         val entries = mutableListOf<Entry>()
         groups.iterator().forEach {
             val max = it.value.maxOf { activity -> activity.sets.maxOf { set -> set.weight } }
@@ -131,19 +132,19 @@ class StatisticsFragment : Fragment() {
     }
 
     private fun mapToStatDataByMonth() : List<StatsData> {
-        val groups = selectedActivities.groupBy { it.date.month }
+        val groups = selectedActivities.filter { activity -> activity.date.plusYears(1).isAfter(LocalDate.now()) }.groupBy { it.date.month }
         val data = groups.map { (k, v) -> StatsData(k.name, v.maxOf { activity -> activity.sets.maxOf { set -> set.weight} } ) }
         return data
     }
 
     private fun mapToStatDataByDayOfWeek() : List<StatsData> {
-        val groups = selectedActivities.groupBy { it.date.dayOfWeek }
+        val groups = selectedActivities.filter { activity -> activity.date.plusDays(7).isAfter(LocalDate.now()) }.groupBy { it.date.dayOfWeek }
         val data = groups.map { (k, v) -> StatsData(k.name, v.maxOf { activity -> activity.sets.maxOf { set -> set.weight} } ) }
         return data
     }
 
     private fun mapToStatDataByDay() : List<StatsData> {
-        val groups = selectedActivities.groupBy { it.date.dayOfMonth }
+        val groups = selectedActivities.filter { activity -> activity.date.plusMonths(1).isAfter(LocalDate.now()) }.groupBy { it.date.dayOfMonth }
         val data = groups.map { (k, v) -> StatsData(k.toString(), v.maxOf { activity -> activity.sets.maxOf { set -> set.weight} } ) }
         return data
     }
