@@ -12,10 +12,12 @@ import com.example.pv239_fitness_tracker.data.Activity
 import com.example.pv239_fitness_tracker.data.Exercise
 import com.example.pv239_fitness_tracker.databinding.FragmentStatisticsBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import java.time.LocalDate
 
@@ -27,6 +29,14 @@ class StatisticsFragment : Fragment() {
 
     private val activityRepository: ActivityRepository by lazy {
         ActivityRepository(requireContext())
+    }
+
+    private class MyXAxisFormatter : ValueFormatter() {
+        private val days = arrayOf("Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday", "Saturday", "Sunday")
+        override fun getAxisLabel(value: Float, axis: AxisBase?): String {
+            return days[value.toInt() - 1]
+        }
     }
 
     override fun onCreateView(
@@ -62,6 +72,8 @@ class StatisticsFragment : Fragment() {
 
         val stats = mapToStatDataByMonth()
         adapter.submitList(stats)
+        binding.statisticsButtonMonthly.isEnabled = false
+        binding.statisticsButtonMonthly.isClickable = false
 
         binding.statisticsButtonDaily.setOnClickListener {
             displayDailyStats()
@@ -92,6 +104,7 @@ class StatisticsFragment : Fragment() {
             entries.add(Entry(x.toFloat(), max.toFloat()))
         }
         entries.sortBy { entry -> entry.x }
+        binding.lineChart.xAxis.valueFormatter = null
         val dataSet = LineDataSet(entries, "Max")
         dataSet.axisDependency = AxisDependency.LEFT
         val datasets = mutableListOf<ILineDataSet>()
@@ -108,6 +121,7 @@ class StatisticsFragment : Fragment() {
             entries.add(Entry(x.toFloat(), max.toFloat()))
         }
         entries.sortBy { entry -> entry.x }
+        binding.lineChart.xAxis.valueFormatter = null
         val dataSet = LineDataSet(entries, "Max")
         dataSet.axisDependency = AxisDependency.LEFT
         val datasets = mutableListOf<ILineDataSet>()
@@ -124,6 +138,7 @@ class StatisticsFragment : Fragment() {
             entries.add(Entry(x.toFloat(), max.toFloat()))
         }
         entries.sortBy { entry -> entry.x }
+        binding.lineChart.xAxis.valueFormatter = MyXAxisFormatter()
         val dataSet = LineDataSet(entries, "Max")
         dataSet.axisDependency = AxisDependency.LEFT
         val datasets = mutableListOf<ILineDataSet>()
@@ -157,6 +172,12 @@ class StatisticsFragment : Fragment() {
         binding.statisticsRecycler.swapAdapter(adapter, true)
         binding.lineChart.data = gData
         binding.lineChart.invalidate()
+        binding.statisticsButtonMonthly.isEnabled = false
+        binding.statisticsButtonMonthly.isClickable = false
+        binding.statisticsButtonDaily.isEnabled = true
+        binding.statisticsButtonDaily.isClickable = true
+        binding.statisticsButtonDayOfWeek.isEnabled = true
+        binding.statisticsButtonDayOfWeek.isClickable = true
     }
 
     private fun displayDailyStats() {
@@ -167,6 +188,12 @@ class StatisticsFragment : Fragment() {
         binding.statisticsRecycler.swapAdapter(adapter, true)
         binding.lineChart.data = gData
         binding.lineChart.invalidate()
+        binding.statisticsButtonMonthly.isEnabled = true
+        binding.statisticsButtonMonthly.isClickable = true
+        binding.statisticsButtonDaily.isEnabled = false
+        binding.statisticsButtonDaily.isClickable = false
+        binding.statisticsButtonDayOfWeek.isEnabled = true
+        binding.statisticsButtonDayOfWeek.isClickable = true
     }
 
     private fun displayDayOfWeekStats() {
@@ -177,5 +204,11 @@ class StatisticsFragment : Fragment() {
         binding.statisticsRecycler.swapAdapter(adapter, true)
         binding.lineChart.data = gData
         binding.lineChart.invalidate()
+        binding.statisticsButtonMonthly.isEnabled = true
+        binding.statisticsButtonMonthly.isClickable = true
+        binding.statisticsButtonDaily.isEnabled = true
+        binding.statisticsButtonDaily.isClickable = true
+        binding.statisticsButtonDayOfWeek.isEnabled = false
+        binding.statisticsButtonDayOfWeek.isClickable = false
     }
 }
