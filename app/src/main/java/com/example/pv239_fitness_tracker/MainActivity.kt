@@ -5,13 +5,16 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
@@ -61,21 +64,30 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     private fun setupNavigation() {
+        setSupportActionBar(findViewById(R.id.toolbar))
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
         val navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
 
-        val fragmentsWithoutNavigation = listOf(
-            R.id.add_activity_fragment,
-            R.id.add_edit_set_fragment,
-            R.id.fragment_exercise_add_edit,
+        val fragmentsWithNavigation = listOf(
+            R.id.calendar_fragment,
+            R.id.exercises_fragment,
+            R.id.settings_fragment,
         )
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            binding.bottomNavigation.isVisible = destination.id !in fragmentsWithoutNavigation
+            binding.bottomNavigation.isVisible = destination.id in fragmentsWithNavigation
+            binding.toolbar.isVisible = destination.id !in fragmentsWithNavigation
+            binding.toolbar.setNavigationOnClickListener { navController.navigateUp() }
         }
+
+    }
+
+    fun setToolbarTitle(title: String) {
+        binding.toolbar.title = title
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)

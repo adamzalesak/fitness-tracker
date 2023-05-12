@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pv239_fitness_tracker.MainActivity
+import com.example.pv239_fitness_tracker.R
 import com.example.pv239_fitness_tracker.data.Activity
 import com.example.pv239_fitness_tracker.data.Exercise
 import com.example.pv239_fitness_tracker.databinding.FragmentStatisticsBinding
@@ -52,6 +54,8 @@ class StatisticsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
+        (activity as MainActivity).setToolbarTitle(getString(R.string.statistics))
+
         selectedExercise = args.selectedExercise
 
         binding.statisticsExerciseNameTextView.text = selectedExercise.name
@@ -60,10 +64,6 @@ class StatisticsFragment : Fragment() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val adapter = StatisticsAdapter()
         binding.statisticsRecycler.adapter = adapter
-
-        binding.buttonBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
 
         selectedActivities = activityRepository.getActivitiesForExercise(selectedExercise.id)
         if (isEmptyExercise())
