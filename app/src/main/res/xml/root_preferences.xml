@@ -27,4 +27,16 @@
             app:summary="%s"
             app:title="@string/settings_notification_hour" />
     </PreferenceCategory>
+    <PreferenceCategory app:title="@string/settings_theme">
+        <ListPreference
+            app:defaultValue="system"
+            app:entries="@array/themes"
+            app:entryValues="@array/themes_values"
+            app:icon="@drawable/baseline_invert_colors_24"
+            app:key="theme"
+            app:summary="%s"
+            app:title="@string/settings_theme" />
+    </PreferenceCategory>
+
+
 </PreferenceScreen>

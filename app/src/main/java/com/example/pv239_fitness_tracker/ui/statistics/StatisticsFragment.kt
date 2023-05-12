@@ -54,6 +54,8 @@ class StatisticsFragment : Fragment() {
 
         selectedExercise = args.selectedExercise
 
+        binding.statisticsExerciseNameTextView.text = selectedExercise.name
+
         binding.statisticsRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         val adapter = StatisticsAdapter()
@@ -66,6 +68,8 @@ class StatisticsFragment : Fragment() {
         selectedActivities = activityRepository.getActivitiesForExercise(selectedExercise.id)
         if (isEmptyExercise())
             return
+
+        binding.lineChart.description.text = ""
 
         binding.lineChart.data = mapToGraphDataByMonth()
         binding.lineChart.xAxis.granularity = 1f

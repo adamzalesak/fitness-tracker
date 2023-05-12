@@ -54,4 +54,8 @@
     <string name="sunday">Neděle</string>
     <string name="required_value_validation_error">Povinný údaj</string>
     <string name="save">Uložit</string>
+    <string name="theme_light">Světlý</string>
+    <string name="theme_dark">Tmavý</string>
+    <string name="theme_system">Podle nastavení systému</string>
+    <string name="settings_theme">Vzhled</string>
 </resources>
