@@ -10,4 +10,9 @@
         android:id="@+id/exercises_fragment"
         android:icon="@drawable/baseline_directions_run_24"
         android:title="@string/bottom_navigation_exercises" />
+
+    <item
+        android:id="@+id/settings_fragment"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="@string/bottom_navigation_settings" />
 </menu>
