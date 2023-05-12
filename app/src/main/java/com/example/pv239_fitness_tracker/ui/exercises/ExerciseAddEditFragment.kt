@@ -40,14 +40,21 @@ class ExerciseAddEditFragment : Fragment() {
         }
 
         binding.saveButton.setOnClickListener {
+            val exerciseName = binding.exerciseName.text.toString()
+
+            if (exerciseName.isEmpty()) {
+                binding.exerciseName.error = getString(R.string.required_value_validation_error)
+                return@setOnClickListener
+            }
+
             if (args.exercise != null) {
                 exerciseRepository.updateExercise(
                     Exercise(
-                        args.exercise!!.id, binding.exerciseEditText.text.toString()
+                        args.exercise!!.id, exerciseName
                     )
                 )
             } else {
-                exerciseRepository.addExercise(binding.exerciseEditText.text.toString())
+                exerciseRepository.addExercise(exerciseName)
             }
             findNavController().navigateUp()
         }
@@ -57,9 +64,9 @@ class ExerciseAddEditFragment : Fragment() {
         val exercise = args.exercise
 
         if (exercise != null) {
-            binding.exerciseEditText.setText(exercise.name)
             binding.header.text = getString(R.string.edit_exercise)
-            binding.saveButton.text = getString(R.string.edit_exercise)
+
+            binding.exerciseName.setText(exercise.name)
         }
     }
 
