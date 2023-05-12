@@ -30,17 +30,34 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        setupAppTheme(sharedPreferences)
 
         setupNavigation()
 
-        WeeklyNotificationsUtil.setupNotificationsByPreferences(
-            this,
-            PreferenceManager.getDefaultSharedPreferences(this)
-        )
+        WeeklyNotificationsUtil.setupNotificationsByPreferences(this, sharedPreferences)
 
         PreferenceManager.getDefaultSharedPreferences(this)
             .registerOnSharedPreferenceChangeListener(this)
+
+
+    }
+
+    private fun setupAppTheme(sharedPreferences: SharedPreferences) {
+        when (sharedPreferences.getString("theme", "system")) {
+            "system" -> {
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+            }
+
+            "light" -> {
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_NO
+            }
+
+            "dark" -> {
+                delegate.localNightMode = AppCompatDelegate.MODE_NIGHT_YES
+            }
+        }
     }
 
     private fun setupNavigation() {
@@ -86,6 +103,10 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
                 }
 
                 WeeklyNotificationsUtil.setupNotificationsByPreferences(this, sharedPreferences)
+            }
+
+            "theme" -> {
+                setupAppTheme(sharedPreferences)
             }
         }
     }
