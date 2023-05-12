@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pv239_fitness_tracker.MainActivity
 import com.example.pv239_fitness_tracker.R
 import com.example.pv239_fitness_tracker.data.Exercise
 import com.example.pv239_fitness_tracker.databinding.BottomSheetExerciseSelectBinding
@@ -36,9 +37,7 @@ class ActivityAddFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
+        (activity as MainActivity).setToolbarTitle(getString(R.string.add_activity))
 
         binding.exerciseTextView.text = exercise.name
         binding.exerciseTextView.setOnClickListener {

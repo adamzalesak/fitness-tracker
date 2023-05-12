@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.pv239_fitness_tracker.MainActivity
 import com.example.pv239_fitness_tracker.R
 import com.example.pv239_fitness_tracker.databinding.FragmentSetAddEditBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
@@ -32,11 +33,9 @@ class SetAddEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setInitialValues()
+        (activity as MainActivity).setToolbarTitle(getString(R.string.add_set))
 
-        binding.buttonBack.setOnClickListener {
-            findNavController().navigateUp()
-        }
+        setInitialValues()
 
         binding.saveButton.setOnClickListener {
             val weightText = binding.weightEditText.text.toString()
@@ -63,8 +62,6 @@ class SetAddEditFragment : Fragment() {
         val set = args.set
 
         if (set != null) {
-            binding.header.text = getString(R.string.edit_set)
-
             binding.repsEditText.setText(set.reps.toString())
             binding.weightEditText.setText(set.weight.toString())
         }
