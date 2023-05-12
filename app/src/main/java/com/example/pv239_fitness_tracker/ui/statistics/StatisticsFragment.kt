@@ -12,6 +12,7 @@ import com.example.pv239_fitness_tracker.data.Activity
 import com.example.pv239_fitness_tracker.data.Exercise
 import com.example.pv239_fitness_tracker.databinding.FragmentStatisticsBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
+import com.example.pv239_fitness_tracker.util.maxWeight
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.YAxis.AxisDependency
 import com.github.mikephil.charting.data.Entry
@@ -99,7 +100,7 @@ class StatisticsFragment : Fragment() {
         val groups = selectedActivities.filter { activity -> activity.date.plusYears(1).isAfter(LocalDate.now()) }.groupBy { it.date.month }
         val entries = mutableListOf<Entry>()
         groups.iterator().forEach {
-            val max = it.value.maxOf { activity -> activity.sets.maxOf { set -> set.weight } }
+            val max = it.value.maxWeight()
             val x = it.key.value
             entries.add(Entry(x.toFloat(), max.toFloat()))
         }
@@ -116,7 +117,7 @@ class StatisticsFragment : Fragment() {
         val groups = selectedActivities.filter { activity -> activity.date.plusMonths(1).isAfter(LocalDate.now()) }.groupBy { it.date.dayOfMonth }
         val entries = mutableListOf<Entry>()
         groups.iterator().forEach {
-            val max = it.value.maxOf { activity -> activity.sets.maxOf { set -> set.weight } }
+            val max = it.value.maxWeight()
             val x = it.key
             entries.add(Entry(x.toFloat(), max.toFloat()))
         }
@@ -133,7 +134,7 @@ class StatisticsFragment : Fragment() {
         val groups = selectedActivities.filter { activity -> activity.date.plusDays(7).isAfter(LocalDate.now()) }.groupBy { it.date.dayOfWeek }
         val entries = mutableListOf<Entry>()
         groups.iterator().forEach {
-            val max = it.value.maxOf { activity -> activity.sets.maxOf { set -> set.weight } }
+            val max = it.value.maxWeight()
             val x = it.key.value
             entries.add(Entry(x.toFloat(), max.toFloat()))
         }
@@ -148,19 +149,19 @@ class StatisticsFragment : Fragment() {
 
     private fun mapToStatDataByMonth() : List<StatsData> {
         val groups = selectedActivities.filter { activity -> activity.date.plusYears(1).isAfter(LocalDate.now()) }.groupBy { it.date.month }
-        val data = groups.map { (k, v) -> StatsData(k.name, v.maxOf { activity -> activity.sets.maxOf { set -> set.weight} } ) }
+        val data = groups.map { (k, v) -> StatsData(k.name, v.maxWeight() ) }
         return data
     }
 
     private fun mapToStatDataByDayOfWeek() : List<StatsData> {
         val groups = selectedActivities.filter { activity -> activity.date.plusDays(7).isAfter(LocalDate.now()) }.groupBy { it.date.dayOfWeek }
-        val data = groups.map { (k, v) -> StatsData(k.name, v.maxOf { activity -> activity.sets.maxOf { set -> set.weight} } ) }
+        val data = groups.map { (k, v) -> StatsData(k.name, v.maxWeight() ) }
         return data
     }
 
     private fun mapToStatDataByDay() : List<StatsData> {
         val groups = selectedActivities.filter { activity -> activity.date.plusMonths(1).isAfter(LocalDate.now()) }.groupBy { it.date.dayOfMonth }
-        val data = groups.map { (k, v) -> StatsData(k.toString(), v.maxOf { activity -> activity.sets.maxOf { set -> set.weight} } ) }
+        val data = groups.map { (k, v) -> StatsData(k.toString(), v.maxWeight() ) }
         return data
     }
 
