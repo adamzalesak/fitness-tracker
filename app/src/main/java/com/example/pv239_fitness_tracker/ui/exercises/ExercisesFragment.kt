@@ -47,12 +47,12 @@ class ExercisesFragment : Fragment() {
             onExerciseDelete = { exercise: Exercise ->
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage(getString(R.string.delete_exercise_message))
-                builder.setPositiveButton(getString(R.string.delete_exercise_positive_button)) { dialog, _ ->
+                builder.setPositiveButton(getString(R.string.delete_positive_button)) { dialog, _ ->
                     exerciseRepository.deleteExercise(exercise)
                     refreshList()
                     dialog.cancel()
                 }
-                builder.setNegativeButton(getString(R.string.delete_exercise_negative_button)) { dialog, _ ->
+                builder.setNegativeButton(getString(R.string.delete_negative_button)) { dialog, _ ->
                     dialog.cancel()
                 }
                 val dialog = builder.create()

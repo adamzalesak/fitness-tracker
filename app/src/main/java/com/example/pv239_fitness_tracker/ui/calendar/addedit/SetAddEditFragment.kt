@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.pv239_fitness_tracker.R
 import com.example.pv239_fitness_tracker.databinding.FragmentSetAddEditBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
 
@@ -19,7 +20,11 @@ class SetAddEditFragment : Fragment() {
         ActivityRepository(requireContext())
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentSetAddEditBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -38,10 +43,9 @@ class SetAddEditFragment : Fragment() {
             val repsText = binding.repsEditText.text.toString()
 
             if (weightText.isEmpty()) {
-                binding.weightEditText.error = "Please enter a value"
-            }
-            else if (repsText.isEmpty()) {
-                binding.repsEditText.error = "Please enter a value"
+                binding.weightEditText.error = getString(R.string.required_value_validation_error)
+            } else if (repsText.isEmpty()) {
+                binding.repsEditText.error = getString(R.string.required_value_validation_error)
             } else {
                 activityRepository.addOrUpdateSet(
                     id = args.set?.id,
@@ -59,6 +63,8 @@ class SetAddEditFragment : Fragment() {
         val set = args.set
 
         if (set != null) {
+            binding.header.text = getString(R.string.edit_set)
+
             binding.repsEditText.setText(set.reps.toString())
             binding.weightEditText.setText(set.weight.toString())
         }

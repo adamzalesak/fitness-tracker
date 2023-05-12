@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pv239_fitness_tracker.R
 import com.example.pv239_fitness_tracker.data.Set
 import com.example.pv239_fitness_tracker.databinding.FragmentCalendarBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
@@ -20,7 +21,11 @@ class CalendarFragment : Fragment() {
     private lateinit var binding: FragmentCalendarBinding
     private var selectedDate = LocalDate.now()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = FragmentCalendarBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -38,45 +43,57 @@ class CalendarFragment : Fragment() {
         ActivityAdapter(
             onActivityClick = { activity ->
                 findNavController()
-                    .navigate(CalendarFragmentDirections.actionCalendarFragmentToStatisticsFragment(selectedExercise = activity.exercise))
+                    .navigate(
+                        CalendarFragmentDirections.actionCalendarFragmentToStatisticsFragment(
+                            selectedExercise = activity.exercise
+                        )
+                    )
             },
             onActivityDelete = { activity ->
                 val builder = AlertDialog.Builder(requireContext())
-                builder.setMessage("Do you want to delete this activity?")
-                builder.setPositiveButton("Yes") { dialog, _ ->
+                builder.setMessage(getString(R.string.delete_activity_message))
+                builder.setPositiveButton(getString(R.string.delete_positive_button)) { dialog, _ ->
                     activityRepository.deleteActivity(activity)
                     refreshList()
                     dialog.cancel()
                 }
-                builder.setNegativeButton("No") { dialog, _ ->
+                builder.setNegativeButton(getString(R.string.delete_negative_button)) { dialog, _ ->
                     dialog.cancel()
                 }
                 val dialog = builder.create()
-                dialog.setTitle("Delete this activity")
+                dialog.setTitle(getString(R.string.delete_activity_title))
                 dialog.show()
             },
             onSetAdd = { activityId: Long ->
                 findNavController()
                     .navigate(
-                        CalendarFragmentDirections.actionCalendarFragmentToSetAddEditFragment(activityId = activityId))
+                        CalendarFragmentDirections.actionCalendarFragmentToSetAddEditFragment(
+                            activityId = activityId
+                        )
+                    )
             },
             onSetClick = { activityId: Long, set: Set ->
                 findNavController()
-                    .navigate(CalendarFragmentDirections.actionCalendarFragmentToSetAddEditFragment(activityId = activityId, set = set))
+                    .navigate(
+                        CalendarFragmentDirections.actionCalendarFragmentToSetAddEditFragment(
+                            activityId = activityId,
+                            set = set
+                        )
+                    )
             },
             onSetDelete = { activityId: Long, set: Set ->
                 val builder = AlertDialog.Builder(requireContext())
-                builder.setMessage("Do you want to delete this set?")
-                builder.setPositiveButton("Yes") { dialog, _ ->
+                builder.setMessage(getString(R.string.delete_set_message))
+                builder.setPositiveButton(getString(R.string.delete_positive_button)) { dialog, _ ->
                     activityRepository.deleteSet(set, activityId)
                     refreshList()
                     dialog.cancel()
                 }
-                builder.setNegativeButton("No") { dialog, _ ->
+                builder.setNegativeButton(getString(R.string.delete_negative_button)) { dialog, _ ->
                     dialog.cancel()
                 }
                 val dialog = builder.create()
-                dialog.setTitle("Delete this set")
+                dialog.setTitle(getString(R.string.delete_set_title))
                 dialog.show()
             }
         )
@@ -101,8 +118,9 @@ class CalendarFragment : Fragment() {
         }
 
         binding.currentDate.setOnClickListener {
-            val datePickerDialog = DatePickerDialog(requireContext(),
-                {_, year, month, dayOfMonth ->
+            val datePickerDialog = DatePickerDialog(
+                requireContext(),
+                { _, year, month, dayOfMonth ->
                     selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
                     refreshList()
                 },
@@ -117,7 +135,8 @@ class CalendarFragment : Fragment() {
         binding.addActivityButton.setOnClickListener {
             findNavController()
                 .navigate(
-                    CalendarFragmentDirections.actionCalendarFragmentToActivityAddFragment(date = selectedDate))
+                    CalendarFragmentDirections.actionCalendarFragmentToActivityAddFragment(date = selectedDate)
+                )
         }
     }
 }
