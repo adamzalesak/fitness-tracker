@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Fitness Tracker</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
 
     <string name="add_set">Add set</string>
     <string name="add_activity">Add activity</string>
@@ -12,6 +11,7 @@
 
     <string name="bottom_navigation_calendar">Calendar</string>
     <string name="bottom_navigation_exercises">Exercises</string>
+    <string name="bottom_navigation_settings">Settings</string>
 
 
     <string name="set_weight">Weight</string>
@@ -33,4 +33,28 @@
     <string name="dayOfWeek">Day of week</string>
     <string name="monthly">Month</string>
     <string name="graph_statistics_maximums">Maximums</string>
+
+    <string name="settings_notification">Notifications</string>
+    <string name="settings_notification_weekly">Weekly notifications</string>
+    <string name="settings_notification_weekly_summary">Receive weekly notifications to keep you on track</string>
+    <string name="settings_notification_day">Notification day</string>
+    <string name="settings_notification_hour">Notification hour</string>
+
+    <string name="notification_improvement_title">Well done!</string>
+    <string name="notification_improvement_message">Your most improved exercise is %1$s Tap to view detailed statistics.</string>
+    <string name="notification_improvement_action">See statistics</string>
+    <string name="notification_progress_title">Good job!</string>
+    <string name="notification_progress_message">You\'ve worked out %1$d times in the last week! Keep it up!</string>
+    <string name="notification_progress_action">Start activity</string>
+    <string name="notification_no_progress_title">Go to the gym!</string>
+    <string name="notification_no_progress_message">You haven\'t worked out in the last week. Get back on track!</string>
+    <string name="notification_no_progress_action">Start activity</string>
+
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="sunday">Sunday</string>
 </resources>

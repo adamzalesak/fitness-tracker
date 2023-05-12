@@ -1,25 +1,114 @@
 package com.example.pv239_fitness_tracker
 
+import android.Manifest
+import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.example.pv239_fitness_tracker.databinding.ActivityMainBinding
+import com.example.pv239_fitness_tracker.notifications.WeeklyNotificationsUtil
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val binding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
     }
+
+    private val PERMISSION_REQUEST_CODE = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        setupNavigation()
+
+        WeeklyNotificationsUtil.setupNotificationsByPreferences(
+            this,
+            PreferenceManager.getDefaultSharedPreferences(this)
+        )
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .registerOnSharedPreferenceChangeListener(this)
+    }
+
+    private fun setupNavigation() {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+
         val navController = navHostFragment.navController
         binding.bottomNavigation.setupWithNavController(navController)
+
+        val fragmentsWithoutNavigation = listOf(
+            R.id.add_activity_fragment,
+            R.id.add_edit_set_fragment,
+            R.id.fragment_exercise_add_edit,
+        )
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.bottomNavigation.isVisible = destination.id !in fragmentsWithoutNavigation
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
+        when (key) {
+            "notifications_weekly", "notifications_day", "notification_hour" -> {
+                val notificationsWeekly =
+                    sharedPreferences.getBoolean("notifications_weekly", false)
+
+                if (notificationsWeekly && ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.POST_NOTIFICATIONS,
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    sharedPreferences.edit().putBoolean("notifications_weekly", false).apply()
+                    recreate()
+
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                        PERMISSION_REQUEST_CODE,
+                    )
+
+                    return
+                }
+
+                WeeklyNotificationsUtil.setupNotificationsByPreferences(this, sharedPreferences)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQUEST_CODE && grantResults.isNotEmpty() &&
+            grantResults[0] == PackageManager.PERMISSION_GRANTED
+        ) {
+            Toast.makeText(applicationContext, "Permission granted", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(applicationContext, "Permission denied", Toast.LENGTH_SHORT).show()
+        }
     }
 }

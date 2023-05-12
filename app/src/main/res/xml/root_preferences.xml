@@ -1,0 +1,30 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory app:title="@string/settings_notification">
+        <SwitchPreference
+            app:defaultValue="false"
+            app:icon="@drawable/baseline_notifications_24"
+            app:key="notifications_weekly"
+            app:summary="@string/settings_notification_weekly_summary"
+            app:title="@string/settings_notification_weekly" />
+
+        <ListPreference
+            app:defaultValue="7"
+            app:dependency="notifications_weekly"
+            app:entries="@array/week_days"
+            app:entryValues="@array/week_days_values"
+            app:icon="@drawable/baseline_calendar_month_24"
+            app:key="notifications_day"
+            app:summary="%s"
+            app:title="@string/settings_notification_day" />
+
+        <ListPreference
+            app:defaultValue="18"
+            app:dependency="notifications_weekly"
+            app:entries="@array/hours"
+            app:entryValues="@array/hours"
+            app:icon="@drawable/baseline_access_time_24"
+            app:key="notification_hour"
+            app:summary="%s"
+            app:title="@string/settings_notification_hour" />
+    </PreferenceCategory>
+</PreferenceScreen>
