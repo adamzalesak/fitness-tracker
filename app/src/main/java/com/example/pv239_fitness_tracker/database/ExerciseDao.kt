@@ -22,6 +22,6 @@ interface ExerciseDao {
     @Query("SELECT * FROM ExerciseEntity WHERE id = :id")
     fun selectExerciseById(id: Long): ExerciseEntity
 
-    @Query("SELECT * FROM ExerciseEntity")
+    @Query("SELECT * FROM ExerciseEntity ORDER BY name ASC")
     fun selectAllExercises(): List<ExerciseEntity>
 }
