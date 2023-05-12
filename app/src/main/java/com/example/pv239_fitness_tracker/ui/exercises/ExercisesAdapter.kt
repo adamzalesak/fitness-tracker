@@ -11,7 +11,6 @@ import com.example.pv239_fitness_tracker.databinding.ItemExerciseBinding
 
 class ExercisesAdapter(
     private val onExerciseClick: (Exercise) -> Unit,
-    private val onStatisticsClick: (Exercise) -> Unit,
     private val onExerciseDelete: (Exercise) -> Unit,
 ) : ListAdapter<Exercise, ExercisesViewHolder>(ExerciseDiffUtil()) {
 
@@ -29,7 +28,6 @@ class ExercisesAdapter(
         holder.bind(
             item = getItem(position),
             onExerciseClick = onExerciseClick,
-            onStatisticsClick = onStatisticsClick,
             onExerciseDelete = onExerciseDelete,
         )
     }
@@ -43,17 +41,12 @@ class ExercisesViewHolder(
     fun bind(
         item: Exercise,
         onExerciseClick: (Exercise) -> Unit,
-        onStatisticsClick: (Exercise) -> Unit,
         onExerciseDelete: (Exercise) -> Unit
     ) {
         binding.exerciseItemNameTextView.text = item.name
 
         binding.root.setOnClickListener {
             onExerciseClick(item)
-        }
-
-        binding.exerciseItemStatisticsButton.setOnClickListener {
-            onStatisticsClick(item)
         }
 
         binding.exerciseItemDeleteButton.setOnClickListener {

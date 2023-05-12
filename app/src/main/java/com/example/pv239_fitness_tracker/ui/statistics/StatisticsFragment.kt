@@ -5,15 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pv239_fitness_tracker.MainActivity
 import com.example.pv239_fitness_tracker.R
 import com.example.pv239_fitness_tracker.data.Activity
 import com.example.pv239_fitness_tracker.data.Exercise
+import com.example.pv239_fitness_tracker.databinding.BottomSheetExerciseSelectBinding
 import com.example.pv239_fitness_tracker.databinding.FragmentStatisticsBinding
 import com.example.pv239_fitness_tracker.repository.ActivityRepository
+import com.example.pv239_fitness_tracker.ui.calendar.addedit.ExerciseBottomSheetAdapter
 import com.example.pv239_fitness_tracker.util.maxWeight
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.YAxis.AxisDependency
@@ -22,13 +23,14 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.time.LocalDate
 
 class StatisticsFragment : Fragment() {
     private lateinit var binding: FragmentStatisticsBinding
     private lateinit var selectedExercise: Exercise
     private lateinit var selectedActivities: List<Activity>
-    private val args : StatisticsFragmentArgs by navArgs()
+    private val args : StatisticsFragmentArgs? by navArgs()
 
     private val activityRepository: ActivityRepository by lazy {
         ActivityRepository(requireContext())
@@ -38,7 +40,9 @@ class StatisticsFragment : Fragment() {
         private val days = arrayOf("Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday", "Sunday")
         override fun getAxisLabel(value: Float, axis: AxisBase?): String {
-            return days[value.toInt() - 1]
+            var index = (value.toInt() - 1) % days.size
+            if (index < 0) index += days.size
+            return days[index]
         }
     }
 
@@ -48,6 +52,31 @@ class StatisticsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentStatisticsBinding.inflate(layoutInflater, container, false)
+
+        binding.exerciseTextView.setOnClickListener {
+            val dialog = BottomSheetDialog(requireContext())
+            val dialogBinding =
+                BottomSheetExerciseSelectBinding.inflate(LayoutInflater.from(requireContext()))
+            val adapter = ExerciseBottomSheetAdapter(
+                onSelect = { e ->
+                    selectedExercise = e
+                    binding.exerciseTextView.text = e.name
+                    dialog.cancel()
+                    onStart()
+                }
+            )
+
+            dialogBinding.exercisesRecycler.layoutManager = LinearLayoutManager(context)
+            dialogBinding.exercisesRecycler.adapter = adapter
+            adapter.submitList(activityRepository.getAllExercises())
+
+            dialog.setContentView(dialogBinding.root)
+            dialog.show()
+        }
+
+        selectedExercise = args?.selectedExercise ?: activityRepository.getDefaultExercise()
+
+
         return binding.root
     }
 
@@ -56,9 +85,8 @@ class StatisticsFragment : Fragment() {
 
         (activity as MainActivity).setToolbarTitle(getString(R.string.statistics))
 
-        selectedExercise = args.selectedExercise
 
-        binding.statisticsExerciseNameTextView.text = selectedExercise.name
+        binding.exerciseTextView.text = selectedExercise.name
 
         binding.statisticsRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -77,8 +105,9 @@ class StatisticsFragment : Fragment() {
 
         val stats = mapToStatDataByMonth()
         adapter.submitList(stats)
-        binding.statisticsButtonMonthly.isEnabled = false
-        binding.statisticsButtonMonthly.isClickable = false
+        binding.statisticsButtonMonthly.isChecked = true
+        binding.statisticsButtonDaily.isChecked = false
+        binding.statisticsButtonDayOfWeek.isChecked = false
 
         binding.statisticsButtonDaily.setOnClickListener {
             displayDailyStats()
@@ -177,12 +206,9 @@ class StatisticsFragment : Fragment() {
         binding.statisticsRecycler.swapAdapter(adapter, true)
         binding.lineChart.data = gData
         binding.lineChart.invalidate()
-        binding.statisticsButtonMonthly.isEnabled = false
-        binding.statisticsButtonMonthly.isClickable = false
-        binding.statisticsButtonDaily.isEnabled = true
-        binding.statisticsButtonDaily.isClickable = true
-        binding.statisticsButtonDayOfWeek.isEnabled = true
-        binding.statisticsButtonDayOfWeek.isClickable = true
+        binding.statisticsButtonMonthly.isChecked = true
+        binding.statisticsButtonDaily.isChecked = false
+        binding.statisticsButtonDayOfWeek.isChecked = false
     }
 
     private fun displayDailyStats() {
@@ -193,12 +219,9 @@ class StatisticsFragment : Fragment() {
         binding.statisticsRecycler.swapAdapter(adapter, true)
         binding.lineChart.data = gData
         binding.lineChart.invalidate()
-        binding.statisticsButtonMonthly.isEnabled = true
-        binding.statisticsButtonMonthly.isClickable = true
-        binding.statisticsButtonDaily.isEnabled = false
-        binding.statisticsButtonDaily.isClickable = false
-        binding.statisticsButtonDayOfWeek.isEnabled = true
-        binding.statisticsButtonDayOfWeek.isClickable = true
+        binding.statisticsButtonMonthly.isChecked = false
+        binding.statisticsButtonDaily.isChecked = true
+        binding.statisticsButtonDayOfWeek.isChecked = false
     }
 
     private fun displayDayOfWeekStats() {
@@ -209,11 +232,8 @@ class StatisticsFragment : Fragment() {
         binding.statisticsRecycler.swapAdapter(adapter, true)
         binding.lineChart.data = gData
         binding.lineChart.invalidate()
-        binding.statisticsButtonMonthly.isEnabled = true
-        binding.statisticsButtonMonthly.isClickable = true
-        binding.statisticsButtonDaily.isEnabled = true
-        binding.statisticsButtonDaily.isClickable = true
-        binding.statisticsButtonDayOfWeek.isEnabled = false
-        binding.statisticsButtonDayOfWeek.isClickable = false
+        binding.statisticsButtonMonthly.isChecked = false
+        binding.statisticsButtonDaily.isChecked = false
+        binding.statisticsButtonDayOfWeek.isChecked = true
     }
 }

@@ -10,60 +10,61 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/exercise_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:padding="16dp"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/shadow"
+            tools:text="Bench Press" />
+
         <View
-            android:id="@+id/shadow"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:alpha="0.1"
-            android:background="?attr/dividerColor"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:alpha="0.2"
+            android:background="?attr/dividerColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/exercise_text_view" />
 
-        <TextView
-            android:id="@+id/statistics_exercise_name_text_view"
+        <com.google.android.material.button.MaterialButtonToggleGroup
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="8dp"
-            android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:textSize="20sp"
-            tools:text="Exercise name" />
+            app:checkedButton="@+id/statistics_button_daily"
+            app:selectionRequired="true">
 
-        <LinearLayout
-            android:id="@+id/statistics_period_recycler"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:clipToPadding="false"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_statistics_period"
-            tools:orientation="horizontal">
-
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/statistics_button_daily"
-                style="?attr/buttonBarButtonStyle"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/daily" />
 
-            <Button
-                android:id="@+id/statistics_button_dayOfWeek"
-                style="?attr/buttonBarButtonStyle"
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/statistics_button_day_of_week"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
                 android:text="@string/dayOfWeek" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/statistics_button_monthly"
-                style="?attr/buttonBarButtonStyle"
+                style="?attr/materialButtonOutlinedStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/monthly" />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/statistics_recycler"

@@ -12,6 +12,11 @@
         android:title="@string/bottom_navigation_exercises" />
 
     <item
+        android:id="@+id/statisticsFragment"
+        android:icon="@drawable/baseline_area_chart_24"
+        android:title="@string/bottom_navigation_statistics" />
+
+    <item
         android:id="@+id/settings_fragment"
         android:icon="@drawable/baseline_settings_24"
         android:title="@string/bottom_navigation_settings" />

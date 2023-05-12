@@ -63,6 +63,7 @@ class ExerciseAddEditFragment : Fragment() {
         val exercise = args.exercise
 
         if (exercise != null) {
+            (activity as MainActivity).setToolbarTitle(getString(R.string.edit_exercise))
             binding.exerciseName.setText(exercise.name)
         }
     }

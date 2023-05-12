@@ -18,21 +18,14 @@
         <action
             android:id="@+id/action_calendar_fragment_to_ActivityAddFragment"
             app:destination="@id/add_activity_fragment" />
-
-        <action
-            android:id="@+id/action_calendar_fragment_to_statisticsFragment"
-            app:destination="@id/statisticsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/exercises_fragment"
         android:name="com.example.pv239_fitness_tracker.ui.exercises.ExercisesFragment"
         android:label="ExercisesFragment"
-        tools:layout="@layout/fragment_exercises" >
+        tools:layout="@layout/fragment_exercises">
 
-        <action
-            android:id="@+id/action_exercises_fragment_to_statisticsFragment"
-            app:destination="@id/statisticsFragment" />
         <action
             android:id="@+id/action_exercises_fragment_to_fragment_exercise_add_edit"
             app:destination="@id/fragment_exercise_add_edit" />
@@ -74,7 +67,9 @@
 
         <argument
             android:name="selectedExercise"
-            app:argType="com.example.pv239_fitness_tracker.data.Exercise" />
+            android:defaultValue="@null"
+            app:argType="com.example.pv239_fitness_tracker.data.Exercise"
+            app:nullable="true" />
     </fragment>
 
     <fragment

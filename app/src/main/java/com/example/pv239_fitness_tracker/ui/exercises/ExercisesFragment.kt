@@ -44,14 +44,6 @@ class ExercisesFragment : Fragment() {
                         )
                     )
             },
-            onStatisticsClick = { exercise: Exercise ->
-                findNavController()
-                    .navigate(
-                        ExercisesFragmentDirections.actionExercisesFragmentToStatisticsFragment(
-                            selectedExercise = exercise
-                        )
-                    )
-            },
             onExerciseDelete = { exercise: Exercise ->
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage(getString(R.string.delete_exercise_message))

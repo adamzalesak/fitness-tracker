@@ -2,7 +2,6 @@ package com.example.pv239_fitness_tracker.ui.calendar
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
@@ -13,7 +12,6 @@ import com.example.pv239_fitness_tracker.databinding.ItemWorkoutActivityBinding
 
 class ActivityAdapter(
     private val onActivityDelete: (Activity) -> Unit,
-    private val onActivityClick: (Activity) -> Unit,
     private val onSetAdd: (Long) -> Unit,
     private val onSetClick: (Long, Set) -> Unit,
     private val onSetDelete: (Long, Set) -> Unit,
@@ -28,7 +26,6 @@ class ActivityAdapter(
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
         holder.bind(
             item = getItem(position),
-            onActivityClick = onActivityClick,
             onActivityDelete = onActivityDelete,
             onSetAdd = onSetAdd,
             onSetClick = onSetClick,
@@ -42,17 +39,12 @@ class ActivityViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(item: Activity,
-             onActivityClick: (Activity) -> Unit,
              onActivityDelete: (Activity) -> Unit,
              onSetAdd: (Long) -> Unit,
              onSetClick: (Long, Set) -> Unit,
              onSetDelete: (Long, Set) -> Unit,
     ) {
         binding.exerciseNameTextView.text = item.exercise.name
-
-        binding.root.setOnClickListener {
-            onActivityClick(item)
-        }
 
         binding.activityDelete.setOnClickListener {
             onActivityDelete(item)

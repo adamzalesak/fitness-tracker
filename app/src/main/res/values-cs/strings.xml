@@ -15,6 +15,7 @@
     <string name="back">Zpět</string>
     <string name="bottom_navigation_calendar">Kalendář</string>
     <string name="bottom_navigation_exercises">Cviky</string>
+    <string name="bottom_navigation_statistics">Statistika</string>
     <string name="bottom_navigation_settings">Nastavení</string>
     <string name="set_weight">Hmotnost</string>
     <string name="set_reps">Počet opakování</string>

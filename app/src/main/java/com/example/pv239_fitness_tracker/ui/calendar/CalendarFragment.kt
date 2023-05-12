@@ -41,14 +41,6 @@ class CalendarFragment : Fragment() {
 
     private val adapter: ActivityAdapter by lazy {
         ActivityAdapter(
-            onActivityClick = { activity ->
-                findNavController()
-                    .navigate(
-                        CalendarFragmentDirections.actionCalendarFragmentToStatisticsFragment(
-                            selectedExercise = activity.exercise
-                        )
-                    )
-            },
             onActivityDelete = { activity ->
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage(getString(R.string.delete_activity_message))

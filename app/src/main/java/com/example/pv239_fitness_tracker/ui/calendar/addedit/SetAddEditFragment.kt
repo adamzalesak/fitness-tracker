@@ -62,6 +62,7 @@ class SetAddEditFragment : Fragment() {
         val set = args.set
 
         if (set != null) {
+            (activity as MainActivity).setToolbarTitle(getString(R.string.edit_set))
             binding.repsEditText.setText(set.reps.toString())
             binding.weightEditText.setText(set.weight.toString())
         }
