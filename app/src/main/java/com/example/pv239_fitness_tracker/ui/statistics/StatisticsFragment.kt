@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pv239_fitness_tracker.MainActivity
-import com.example.pv239_fitness_tracker.R
 import com.example.pv239_fitness_tracker.data.Activity
 import com.example.pv239_fitness_tracker.data.Exercise
 import com.example.pv239_fitness_tracker.databinding.BottomSheetExerciseSelectBinding
@@ -83,9 +81,6 @@ class StatisticsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        (activity as MainActivity).setToolbarTitle(getString(R.string.statistics))
-
-
         binding.exerciseTextView.text = selectedExercise.name
 
         binding.statisticsRecycler.layoutManager =
@@ -94,8 +89,16 @@ class StatisticsFragment : Fragment() {
         binding.statisticsRecycler.adapter = adapter
 
         selectedActivities = activityRepository.getActivitiesForExercise(selectedExercise.id)
-        if (isEmptyExercise())
+
+        if (isEmptyExercise()) {
+            binding.statisticsButtonDaily.setOnClickListener {}
+            binding.statisticsButtonMonthly.setOnClickListener {}
+            binding.statisticsButtonDayOfWeek.setOnClickListener {}
+
+            binding.lineChart.data = null
+            binding.lineChart.invalidate()
             return
+        }
 
         binding.lineChart.description.text = ""
 

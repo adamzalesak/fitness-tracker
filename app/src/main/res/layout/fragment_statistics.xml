@@ -41,6 +41,7 @@
             android:layout_marginTop="8dp"
             android:gravity="center"
             app:checkedButton="@+id/statistics_button_daily"
+            app:singleSelection="true"
             app:selectionRequired="true">
 
             <com.google.android.material.button.MaterialButton
