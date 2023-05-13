@@ -69,7 +69,7 @@ class ActivityRepository (
             .map { it.toAppData(setDao.selectSetsForActivity(it.id), exerciseDao.selectExerciseById(it.exerciseId)) }
 
     fun getDefaultExercise(): Exercise =
-        exerciseDao.selectExerciseById(1).toAppData()
+        exerciseDao.selectDefaultExercise().toAppData()
 
     fun getAllExercises(): List<Exercise> =
         exerciseDao.selectAllExercises().map {it.toAppData()}
