@@ -24,4 +24,7 @@ interface ExerciseDao {
 
     @Query("SELECT * FROM ExerciseEntity ORDER BY name ASC")
     fun selectAllExercises(): List<ExerciseEntity>
+
+    @Query("SELECT * FROM ExerciseEntity ORDER BY name ASC LIMIT 1")
+    fun selectDefaultExercise(): ExerciseEntity
 }
