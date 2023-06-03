@@ -59,4 +59,5 @@
     <string name="theme_dark">Tmavý</string>
     <string name="theme_system">Podle nastavení systému</string>
     <string name="settings_theme">Vzhled</string>
+    <string name="no_activities">Žádné aktivity</string>
 </resources>
