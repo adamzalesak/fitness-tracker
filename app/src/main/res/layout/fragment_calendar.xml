@@ -51,6 +51,7 @@
         app:layout_constraintTop_toBottomOf="@id/calendar_toolbar" />
 
     <TextView
+        android:id="@+id/empty_string"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
