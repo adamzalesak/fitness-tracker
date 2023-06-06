@@ -36,6 +36,8 @@ class CalendarFragment : Fragment() {
 
     private fun refreshList() {
         binding.currentDate.text = selectedDate.format(DateUtil.dateFormat)
+        val activities = activityRepository.getActivitiesForDate(selectedDate)
+        binding.emptyString.visibility = if(activities.isEmpty()) View.VISIBLE else View.INVISIBLE
         adapter.submitList(activityRepository.getActivitiesForDate(selectedDate))
     }
 
